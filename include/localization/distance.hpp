@@ -6,6 +6,19 @@
 
 
 constexpr double MM_TO_IN = 1 / 25.4;
+constexpr double M_TO_IN = 39.3701;
+
+
+// Values from alexDickhans/echo on GitHub
+constexpr float WALL_0_X = 1.78308 * M_TO_IN;
+constexpr float WALL_1_Y = 1.78308 * M_TO_IN;
+constexpr float WALL_2_X = -1.78308 * M_TO_IN;
+constexpr float WALL_3_Y = -1.78308 * M_TO_IN;
+
+
+inline double angle_diff(double a, double b) {
+    return std::remainder(b - a, 2 * M_PI);
+}
 
 
 class Distance {
@@ -28,6 +41,27 @@ public:
 
         // Get the current absolute position of the sensor (robot position + offset relative to field)
         Eigen::Vector2f x = X.head<2>() + Eigen::Rotation2Df(X.z()) * offset.head<2>();
+
+        // Predict the value of the distance sensor by finding the closest wall to it
+        // then dividing the distance from the wall by cos(theta) to find the hypotenuse
+        // which represents the predicted distance sensor reading
+        double predicted = 50.0;
+
+        if (const double theta = std::abs(angle_diff(0, angle)); theta < M_PI_2) {
+            predicted = std::min(predicted, (WALL_0_X - X.x()) / std::cos(theta));
+        }
+
+        if (const double theta = std::abs(angle_diff(M_PI_2, angle)); theta < M_PI_2) {
+            predicted = std::min(predicted, (WALL_1_Y - X.y()) / std::cos(theta));
+        }
+
+        if (const double theta = std::abs(angle_diff(M_PI, angle)); theta < M_PI_2) {
+            predicted = std::min(predicted, (X.x() - WALL_2_X) / std::cos(theta));
+        }
+
+        if (const double theta = std::abs(angle_diff(3 * M_PI_2, angle)); theta < M_PI_2) {
+            predicted = std::min(predicted, (X.y() - WALL_3_Y) / std::cos(theta));
+        }
     }
 
 private:
