@@ -48,19 +48,19 @@ public:
         double predicted = 50.0;
 
         if (const double theta = std::abs(angle_diff(0, angle)); theta < M_PI_2) {
-            predicted = std::min(predicted, (WALL_0_X - X.x()) / std::cos(theta));
+            predicted = std::min(predicted, (WALL_0_X - x.x()) / std::cos(theta));
         }
 
         if (const double theta = std::abs(angle_diff(M_PI_2, angle)); theta < M_PI_2) {
-            predicted = std::min(predicted, (WALL_1_Y - X.y()) / std::cos(theta));
+            predicted = std::min(predicted, (WALL_1_Y - x.y()) / std::cos(theta));
         }
 
         if (const double theta = std::abs(angle_diff(M_PI, angle)); theta < M_PI_2) {
-            predicted = std::min(predicted, (X.x() - WALL_2_X) / std::cos(theta));
+            predicted = std::min(predicted, (x.x() - WALL_2_X) / std::cos(theta));
         }
 
         if (const double theta = std::abs(angle_diff(3 * M_PI_2, angle)); theta < M_PI_2) {
-            predicted = std::min(predicted, (X.y() - WALL_3_Y) / std::cos(theta));
+            predicted = std::min(predicted, (x.y() - WALL_3_Y) / std::cos(theta));
         }
     }
 
