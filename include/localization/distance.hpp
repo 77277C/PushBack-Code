@@ -21,6 +21,27 @@ inline double angle_diff(double a, double b) {
 }
 
 
+// Approximate normcdf using Abramowitz and Stegun formula 7.1.26
+double normcdf(double z) {
+    // Constants
+    constexpr double b1 =  0.319381530;
+    constexpr double b2 = -0.356563782;
+    constexpr double b3 =  1.781477937;
+    constexpr double b4 = -1.821255978;
+    constexpr double b5 =  1.330274429;
+    constexpr double p  =  0.2316419;
+    constexpr double c  =  0.39894228; // 1/sqrt(2*pi)
+
+    if (z >= 0.0) {
+        double t = 1.0 / (1.0 + p * z);
+        return 1.0 - c * std::exp(-z * z / 2.0) * t *
+            (b1 + t * (b2 + t * (b3 + t * (b4 + t * b5))));
+    } else {
+        return 1.0 - normcdf(-z); // use symmetry
+    }
+}
+
+
 class Distance {
 public:
     Distance(pros::Distance sensor, Eigen::Vector3f offset) :
@@ -62,6 +83,8 @@ public:
         if (const double theta = std::abs(angle_diff(3 * M_PI_2, angle)); theta < M_PI_2) {
             predicted = std::min(predicted, (x.y() - WALL_3_Y) / std::cos(theta));
         }
+
+        return normpdf((measured - predicted) / stddev);
     }
 
 private:
