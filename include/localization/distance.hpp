@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+#include <optional>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include <pros/distance.hpp>
@@ -21,24 +23,11 @@ inline double angle_diff(double a, double b) {
 }
 
 
-// Approximate normcdf using Abramowitz and Stegun formula 7.1.26
-double normcdf(double z) {
-    // Constants
-    constexpr double b1 =  0.319381530;
-    constexpr double b2 = -0.356563782;
-    constexpr double b3 =  1.781477937;
-    constexpr double b4 = -1.821255978;
-    constexpr double b5 =  1.330274429;
-    constexpr double p  =  0.2316419;
-    constexpr double c  =  0.39894228; // 1/sqrt(2*pi)
-
-    if (z >= 0.0) {
-        double t = 1.0 / (1.0 + p * z);
-        return 1.0 - c * std::exp(-z * z / 2.0) * t *
-            (b1 + t * (b2 + t * (b3 + t * (b4 + t * b5))));
-    } else {
-        return 1.0 - normcdf(-z); // use symmetry
-    }
+// Cheap approximation of normpdf (normal distribution PDF)
+double normpdf(double x, double mu = 0.0, double sigma = 1.0) {
+    constexpr double inv_sqrt_2pi = 0.3989422804014327; // 1 / sqrt(2 * pi)
+    double z = (x - mu) / sigma;
+    return (inv_sqrt_2pi / sigma) * std::exp(-0.5 * z * z);
 }
 
 
@@ -84,7 +73,7 @@ public:
             predicted = std::min(predicted, (x.y() - WALL_3_Y) / std::cos(theta));
         }
 
-        return normpdf((measured - predicted) / stddev);
+        return normpdf(distance, predicted, stddev);
     }
 
 private:
