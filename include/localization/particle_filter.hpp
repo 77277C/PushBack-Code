@@ -47,7 +47,7 @@ public:
         // Update readings on all sensors
         update_sensors();
 
-        const float angle = get_angle();
+        float angle = get_angle();
         for (size_t i = 0; i < N; i++) {
             // Place particle at random point in field if out of field
             if (!is_particle_in_field(particles[i])) {
