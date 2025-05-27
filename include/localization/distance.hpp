@@ -5,17 +5,7 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include <pros/distance.hpp>
-
-
-constexpr double MM_TO_IN = 1 / 25.4;
-constexpr double M_TO_IN = 39.3701;
-
-
-// Values from alexDickhans/echo on GitHub
-constexpr float WALL_0_X = 1.78308 * M_TO_IN;
-constexpr float WALL_1_Y = 1.78308 * M_TO_IN;
-constexpr float WALL_2_X = -1.78308 * M_TO_IN;
-constexpr float WALL_3_Y = -1.78308 * M_TO_IN;
+#include "constants.hpp"
 
 
 inline double angle_diff(double a, double b) {
@@ -76,7 +66,7 @@ public:
         return normpdf(distance, predicted, stddev);
     }
 
-private:
+protected:
     Eigen::Vector3f offset;
     pros::Distance sensor;
 

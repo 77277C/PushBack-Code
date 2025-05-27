@@ -40,6 +40,7 @@ file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.c")
 # Define the executable target
 add_executable(PROS_Project ${SOURCES}
         include/localization/distance.hpp
+        include/localization/particle_filter.hpp
 )
 
 # Optionally, link to external libraries if necessary
