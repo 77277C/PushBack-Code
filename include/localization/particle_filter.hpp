@@ -7,8 +7,8 @@
 
 
 typedef struct {
-    Eigen::Vector2f location;
-    double weight;
+    Eigen::Vector2f location = Eigen::Vector2f::Zero();
+    double weight = 1.0;
 } Particle;
 
 
@@ -16,11 +16,7 @@ template<size_t N>
 class ParticleFilter {
 public:
     explicit ParticleFilter(std::vector<std::unique_ptr<Distance>> sensors, std::function<float()> get_angle)
-        : sensors(std::move(sensors)), get_angle(std::move(get_angle)) {
-        for (auto& particle: particles) {
-            particle.location = Eigen::Vector2f::Zero();
-        }
-    }
+        : sensors(std::move(sensors)), get_angle(std::move(get_angle)) {}
 
     Eigen::Vector3f get_prediction() {
         return prediction;
@@ -65,6 +61,9 @@ public:
         }
 
         resample();
+        
+        last_update_time = pros::millis();
+        distance_since_update = 0.0;
     }
 
     double weight_particle(const Eigen::Vector3f& particle_vector) {
@@ -89,10 +88,10 @@ public:
 
     static bool is_particle_in_field(Particle particle) {
         return (
-            particle.location.x() < WALL_0_X &&
-            particle.location.y() < WALL_1_Y &&
-            particle.location.x() > WALL_2_X &&
-            particle.location.y() > WALL_3_Y
+            particle.location.x() < WALL &&
+            particle.location.y() < WALL &&
+            particle.location.x() > -WALL &&
+            particle.location.y() > -WALL
         );
     }
 
