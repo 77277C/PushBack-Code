@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <random>
 #include <utility>
 #include "distance.hpp"
@@ -34,8 +35,7 @@ public:
 
         // Return if robot hasn't moved to avoid particle convergence
         if (
-            distance_since_update < max_distance_since_update &&
-            max_update_interval > pros::millis() - last_update_time
+            distance_since_update < max_distance_since_update
         ) {
             return;
         }
@@ -61,8 +61,7 @@ public:
         }
 
         resample();
-        
-        last_update_time = pros::millis();
+
         distance_since_update = 0.0;
     }
 
@@ -149,6 +148,15 @@ public:
         prediction = Eigen::Vector3f(x_sum / static_cast<float>(N), y_sum / static_cast<float>(N), get_angle());
     }
 
+    void init_uniform(const double min, const double max) {
+        std::uniform_real_distribution xDistribution(min, max);
+        std::uniform_real_distribution yDistribution(min, max);
+
+        for (auto && particle : this->particles) {
+            particle.location = Eigen::Vector2f(xDistribution(random_gen), yDistribution(random_gen));
+        }
+    }
+
 protected:
     Eigen::Vector3f prediction{};
     std::function<float()> get_angle;
@@ -161,7 +169,6 @@ protected:
     std::uniform_real_distribution<> field_distribution{-WALL, WALL};
 
     double distance_since_update = 0.0;
-    int32_t last_update_time = 0.0;
     double max_distance_since_update = 2.0;
-    int32_t max_update_interval = 2000;
+
 };
