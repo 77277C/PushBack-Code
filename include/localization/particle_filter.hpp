@@ -16,7 +16,9 @@ typedef struct {
 template<size_t N>
 class ParticleFilter {
 public:
-    explicit ParticleFilter(std::vector<std::unique_ptr<Distance>> sensors, std::function<float()> get_angle)
+    std::function<float()> get_angle;
+
+    explicit ParticleFilter(std::vector<std::unique_ptr<Distance>>& sensors, std::function<float()> get_angle)
         : sensors(std::move(sensors)), get_angle(std::move(get_angle)) {}
 
     Eigen::Vector3f get_prediction() {
@@ -57,7 +59,7 @@ public:
             particle_vector.z() = angle;
 
             // Weight the particle
-            particles[i].weight = weight_particle(particle_vector);
+            particles[i].weight = weigh_particle(particle_vector);
         }
 
         resample();
@@ -65,7 +67,7 @@ public:
         distance_since_update = 0.0;
     }
 
-    double weight_particle(const Eigen::Vector3f& particle_vector) {
+    double weigh_particle(const Eigen::Vector3f& particle_vector) {
         double combined_weight = 1.0;
 
         // Multiply the combined weight by the probability of each sensor
@@ -148,18 +150,23 @@ public:
         prediction = Eigen::Vector3f(x_sum / static_cast<float>(N), y_sum / static_cast<float>(N), get_angle());
     }
 
-    void init_uniform(const double min, const double max) {
-        std::uniform_real_distribution xDistribution(min, max);
-        std::uniform_real_distribution yDistribution(min, max);
+    void init_norm_dist(const Eigen::Vector2f& mean) {
+        auto covariance = Eigen::Matrix2f::Identity() * 0.05;
 
         for (auto && particle : this->particles) {
-            particle.location = Eigen::Vector2f(xDistribution(random_gen), yDistribution(random_gen));
+            particle.location = mean + covariance * Eigen::Vector2f::Random();
         }
+
+        prediction.z() = get_angle();
+        distance_since_update += 2.0 * distance_since_update;
+    }
+
+    const std::ranlux24_base& get_random_gen() {
+        return random_gen;
     }
 
 protected:
     Eigen::Vector3f prediction{};
-    std::function<float()> get_angle;
 
     std::array<Particle, N> particles;
     std::array<Particle, N> old_particles;
@@ -169,6 +176,5 @@ protected:
     std::uniform_real_distribution<> field_distribution{-WALL, WALL};
 
     double distance_since_update = 0.0;
-    double max_distance_since_update = 2.0;
-
+    double max_distance_since_update = 1.0;
 };

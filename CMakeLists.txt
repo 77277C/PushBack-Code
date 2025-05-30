@@ -41,7 +41,7 @@ file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.c")
 add_executable(PROS_Project ${SOURCES}
         include/localization/distance.hpp
         include/localization/particle_filter.hpp
-        include/localization/integration.hpp
+        include/localization/lemlib_integration.hpp
 )
 
 # Optionally, link to external libraries if necessary
