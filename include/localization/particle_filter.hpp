@@ -3,6 +3,7 @@
 #include <memory>
 #include <random>
 #include <utility>
+
 #include "distance.hpp"
 #include "constants.hpp"
 
@@ -39,6 +40,8 @@ public:
         if (
             distance_since_update < max_distance_since_update
         ) {
+            // Still form a prediction to ensure the moved distance from odom is accounted for
+            prediction = form_prediction();
             return;
         }
 
@@ -147,7 +150,20 @@ public:
         }
 
         // Estimate the new predicted position as the mean of all resampled particles.
-        prediction = Eigen::Vector3f(x_sum / static_cast<float>(N), y_sum / static_cast<float>(N), get_angle());
+        prediction = form_prediction();
+    }
+
+    Eigen::Vector3f form_prediction() {
+        float x_sum = 0.0;
+        float y_sum = 0.0;
+
+        for (auto& particle : particles) {
+            x_sum += particle.location.x();
+            y_sum += particle.location.y();
+        }
+
+        // Estimate the new predicted position as the mean of all resampled particles.
+        return Eigen::Vector3f(x_sum / static_cast<float>(N), y_sum / static_cast<float>(N), get_angle());
     }
 
     void init_norm_dist(const Eigen::Vector2f& mean) {
