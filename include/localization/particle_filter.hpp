@@ -17,180 +17,172 @@ typedef struct {
 template<size_t N>
 class ParticleFilter {
 public:
-    std::function<float()> get_angle;
+    const std::function<float()> getAngle;
 
-    explicit ParticleFilter(std::vector<std::unique_ptr<Distance>>& sensors, std::function<float()> get_angle)
-        : sensors(std::move(sensors)), get_angle(std::move(get_angle)) {}
+    explicit ParticleFilter(std::vector<std::unique_ptr<Distance>>& sensors, std::function<float()> getAngle)
+        : sensors(std::move(sensors)), getAngle(std::move(getAngle)) {}
 
-    Eigen::Vector3f get_prediction() {
+    [[nodiscard]] Eigen::Vector3f getPrediction() const {
         return prediction;
     }
 
+    [[nodiscard]] const std::ranlux24_base& getRandomGen() const {
+        return randomGen;
+    }
+
     void update(
-        const std::function<Eigen::Vector2f()>& get_prediction
+        const std::function<Eigen::Vector2f()>& getPrediction
     ) {
         // Add the prediction to each particle
-        for (auto&& particle : particles) {
-            particle.location += get_prediction();
+        for (auto& particle : particles) {
+            particle.location += getPrediction();
         }
 
-        distance_since_update = get_prediction().norm();
+        distanceSinceUpdate = getPrediction().norm();
 
         // Return if robot hasn't moved to avoid particle convergence
         if (
-            distance_since_update < max_distance_since_update
+            distanceSinceUpdate < 2.0
         ) {
             // Still form a prediction to ensure the moved distance from odom is accounted for
-            prediction = form_prediction();
+            prediction = formPrediction();
             return;
         }
 
         // Update readings on all sensors
-        update_sensors();
+        updateSensors();
 
-        float angle = get_angle();
+        auto angle = getAngle();
         for (size_t i = 0; i < N; i++) {
             // Place particle at random point in field if out of field
-            if (!is_particle_in_field(particles[i])) {
-                particles[i].location.x() = field_distribution(random_gen);
-                particles[i].location.y() = field_distribution(random_gen);
+            if (!isPoseInField(particles[i].location)) {
+                particles[i].location.x() = fieldDistribution(randomGen);
+                particles[i].location.y() = fieldDistribution(randomGen);
             }
 
             // Convert the 2d particle to a 3d particle
-            auto particle_vector = Eigen::Vector3f();
-            particle_vector.head<2>() = particles[i].location;
-            particle_vector.z() = angle;
+            auto particleVector = Eigen::Vector3f();
+            particleVector.head<2>() = particles[i].location;
+            particleVector.z() = angle;
 
             // Weight the particle
-            particles[i].weight = weigh_particle(particle_vector);
+            particles[i].weight = weighParticle(particleVector);
         }
 
         resample();
 
-        distance_since_update = 0.0;
+        distanceSinceUpdate = 0.0;
     }
 
-    double weigh_particle(const Eigen::Vector3f& particle_vector) {
-        double combined_weight = 1.0;
+    [[nodiscard]] double weighParticle(const Eigen::Vector3f& particleVector) const {
+        double combinedWeight = 1.0;
 
         // Multiply the combined weight by the probability of each sensor
-        for (const auto& sensor : sensors) {
-            auto weight = sensor->get_probability(particle_vector);
+        for (auto& sensor : sensors) {
+            const auto weight = sensor->getProbability(particleVector);
             if (weight.has_value()) {
-                combined_weight *= weight.value();
+                combinedWeight *= weight.value();
             }
         }
 
-        return combined_weight;
+        return combinedWeight;
     }
 
-    void update_sensors() {
+    void updateSensors() {
         for (const auto& sensor : sensors) {
             sensor->update();
         }
     }
 
-    static bool is_particle_in_field(Particle particle) {
+    static bool isPoseInField(const Eigen::Vector2f& pose) {
         return (
-            particle.location.x() < WALL &&
-            particle.location.y() < WALL &&
-            particle.location.x() > -WALL &&
-            particle.location.y() > -WALL
+            pose.x() < WALL &&
+            pose.y() < WALL &&
+            pose.x() > -WALL &&
+            pose.y() > -WALL
         );
     }
 
     void resample() {
-        double total_weight = 0.0;
+        double totalWeight = 0.0;
 
         // Sum all particle weights and make a copy of the current set.
         // Think of each particle's weight as a slice in a pie chart of "trust" — bigger slices = more believable.
         for (size_t i = 0; i < N; i++) {
-            total_weight += particles[i].weight;
-            old_particles[i] = particles[i];
+            totalWeight += particles[i].weight;
+            oldParticles[i] = particles[i];
         }
 
         // Compute the average weight across all particles.
         // This defines the spacing between our sampling points on the pie chart.
-        const double avg_weight = total_weight / static_cast<double>(N);
+        const double avgWeight = totalWeight / static_cast<double>(N);
 
         // Choose a random starting offset within [0, avg_weight)
         // This is like randomly placing the first pointer on the pie chart.
-        std::uniform_real_distribution<> distribution{0.0, avg_weight};
-        const double random_weight = distribution(random_gen);
+        std::uniform_real_distribution<> distribution{0.0, avgWeight};
+        const auto randomWeight = distribution(randomGen);
 
         size_t j = 0;
-        auto cumulative_weight = 0.0;
-
-        float x_sum = 0.0;
-        float y_sum = 0.0;
+        double cumulativeWeight = 0.0;
 
         // Resample N particles using low-variance resampling.
         // We place N evenly spaced markers on the cumulative weight pie chart, starting from random_weight.
         for (size_t i = 0; i < N; i++) {
-            const auto weight = static_cast<double>(i) * avg_weight + random_weight;
+            const auto weight = static_cast<double>(i) * avgWeight + randomWeight;
 
             // Walk through the cumulative weights until we find the particle that spans the current weight.
             // Particles with bigger weight slices will get hit more often — they're more likely to survive.
-            while (cumulative_weight < weight) {
+            while (cumulativeWeight < weight) {
                 if (j >= N) {
                     break;
                 }
-                cumulative_weight += particles[j].weight;
+                cumulativeWeight += particles[j].weight;
                 j++;
             }
 
             // Copy the selected particle's location into the new set.
             // This is effectively cloning a "good guess" multiple times.
-            particles[i].location.x() = old_particles[j-1].location.x();
-            particles[i].location.y() = old_particles[j-1].location.y();
-
-            // Sum the resampled particle positions for the final prediction.
-            x_sum += particles[i].location.x();
-            y_sum += particles[i].location.y();
+            particles[i].location.x() = oldParticles[j-1].location.x();
+            particles[i].location.y() = oldParticles[j-1].location.y();
         }
 
         // Estimate the new predicted position as the mean of all resampled particles.
-        prediction = form_prediction();
+        prediction = formPrediction();
     }
 
-    Eigen::Vector3f form_prediction() {
-        float x_sum = 0.0;
-        float y_sum = 0.0;
+    Eigen::Vector3f formPrediction() {
+        float xSum = 0.0;
+        float ySum = 0.0;
 
         for (auto& particle : particles) {
-            x_sum += particle.location.x();
-            y_sum += particle.location.y();
+            xSum += particle.location.x();
+            ySum += particle.location.y();
         }
 
         // Estimate the new predicted position as the mean of all resampled particles.
-        return Eigen::Vector3f(x_sum / static_cast<float>(N), y_sum / static_cast<float>(N), get_angle());
+        return {xSum / static_cast<float>(N), ySum / static_cast<float>(N), getAngle()};
     }
 
-    void init_norm_dist(const Eigen::Vector2f& mean) {
-        auto covariance = Eigen::Matrix2f::Identity() * 0.05;
+    void initNormDist(const Eigen::Vector2f& mean) {
+        const auto covariance = Eigen::Matrix2f::Identity() * 0.05;
 
-        for (auto && particle : this->particles) {
+        for (auto &&particle : this->particles) {
             particle.location = mean + covariance * Eigen::Vector2f::Random();
         }
 
-        prediction.z() = get_angle();
-        distance_since_update += 2.0 * distance_since_update;
-    }
-
-    const std::ranlux24_base& get_random_gen() {
-        return random_gen;
+        prediction.z() = getAngle();
+        distanceSinceUpdate += 2.0 * distanceSinceUpdate;
     }
 
 protected:
     Eigen::Vector3f prediction{};
 
     std::array<Particle, N> particles;
-    std::array<Particle, N> old_particles;
+    std::array<Particle, N> oldParticles;
     std::vector<std::unique_ptr<Distance>> sensors;
 
-    std::ranlux24_base random_gen;
-    std::uniform_real_distribution<> field_distribution{-WALL, WALL};
+    std::ranlux24_base randomGen;
+    std::uniform_real_distribution<> fieldDistribution{-WALL, WALL};
 
-    double distance_since_update = 0.0;
-    double max_distance_since_update = 1.0;
+    double distanceSinceUpdate = 0.0;
 };

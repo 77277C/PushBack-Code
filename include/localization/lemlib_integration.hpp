@@ -10,9 +10,9 @@
 template<size_t N>
 class ParticleFilterChassis: public lemlib::Chassis {
 public:
-    ParticleFilterChassis(lemlib::Drivetrain drivetrain, lemlib::ControllerSettings linearSettings, lemlib::ControllerSettings angularSettings,
-                lemlib::OdomSensors odomSensors, lemlib::DriveCurve* throttleCurve = &lemlib::defaultDriveCurve,
-                lemlib::DriveCurve* steerCurve = &lemlib::defaultDriveCurve, std::vector<std::unique_ptr<Distance>>& pfSensors)
+    explicit ParticleFilterChassis(lemlib::Drivetrain drivetrain, lemlib::ControllerSettings linearSettings, lemlib::ControllerSettings angularSettings,
+                lemlib::OdomSensors odomSensors,  std::vector<std::unique_ptr<Distance>>& pfSensors, lemlib::DriveCurve* throttleCurve = &lemlib::defaultDriveCurve,
+                lemlib::DriveCurve* steerCurve = &lemlib::defaultDriveCurve)
                     : Chassis(drivetrain, linearSettings, angularSettings, odomSensors, throttleCurve,
                         steerCurve) {
         pf = std::make_unique<ParticleFilter<N>>(sensors, [this]() {
@@ -23,15 +23,17 @@ public:
     void setPose(float x, float y, float theta, bool radians = false, bool resetParticles = true) {
         Chassis::setPose(x, y, theta, radians);
         if (resetParticles) {
-            pf->init_norm_dist({x, y});
+            pf->initNormDist({x, y});
         }   
     }
 
     void odomUpdate() {
-        lemlib::Pose before = getPose();
+        constexpr bool radians = false;
+
+        const lemlib::Pose before = getPose(radians);
         lemlib::update();
-        lemlib::Pose after = getPose();
-        lemlib::Pose change = after - before;
+        const lemlib::Pose after = getPose(radians);
+        const lemlib::Pose change = after - before;
 
         std::uniform_real_distribution xDistribution(change.x - DRIVE_NOISE * change.x,
                                                     change.x + DRIVE_NOISE * change.x);
@@ -41,19 +43,19 @@ public:
         // Angle distribution doesn't factor in current theta because odom change is already rotated
         // to be in (x, y) format
         static std::uniform_real_distribution angleDistribution(-ANGLE_NOISE, ANGLE_NOISE);
+        static auto randomGen = pf->getRandomGen();
 
         pf->update([&]() {
-            static auto random_gen = pf->get_random_gen();
-            const auto noisyX = xDistribution(random_gen);
-            const auto noisyY = yDistribution(random_gen);
-            const auto noisyAngleDelta = angleDistribution(random_gen);
+            const auto noisyX = xDistribution(randomGen);
+            const auto noisyY = yDistribution(randomGen);
+            const auto noisyAngleDelta = angleDistribution(randomGen);
 
             // Create a vector from noisyX and noisyY and rotate it by possible angular noise
             return Eigen::Rotation2Df(noisyAngleDelta) * Eigen::Vector2f({noisyX, noisyY});
         });
 
-        auto prediction = pf->get_prediction();
-        setPose(prediction.x(), prediction.y(), after.theta, after.radians, true);
+        const auto prediction = pf->getPrediction();
+        setPose(prediction.x(), prediction.y(), after.theta, radians, true);
     }
 
 protected:
