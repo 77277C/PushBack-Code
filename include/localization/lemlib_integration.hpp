@@ -15,7 +15,7 @@ public:
                 lemlib::DriveCurve* steerCurve = &lemlib::defaultDriveCurve)
                     : Chassis(drivetrain, linearSettings, angularSettings, odomSensors, throttleCurve,
                         steerCurve) {
-        pf = std::make_unique<ParticleFilter<N>>(sensors, [this]() {
+        pf = std::make_unique<ParticleFilter<N>>(pfSensors, [this]() {
             return this->getPose(true, true).theta;
         });
     }
@@ -55,7 +55,7 @@ public:
         });
 
         const auto prediction = pf->getPrediction();
-        setPose(prediction.x(), prediction.y(), after.theta, radians, true);
+        setPose(prediction.x(), prediction.y(), after.theta, radians, false);
     }
 
 protected:
