@@ -164,10 +164,10 @@ public:
     }
 
     void initNormDist(const Eigen::Vector2f& mean) {
-        const auto covariance = Eigen::Matrix2f::Identity() * 0.05;
+        std::normal_distribution<> dist{0, STARTING_POS_VARIANCE};
 
         for (auto &&particle : this->particles) {
-            particle.location = mean + covariance * Eigen::Vector2f::Random();
+            particle.location = mean + Eigen::Vector2f(dist(randomGen), dist(randomGen));
         }
 
         prediction.z() = getAngle();
