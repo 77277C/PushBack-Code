@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "pros/rtos.hpp"
 #include "lemlib/api.hpp"
 #include "lemlib/chassis/odom.hpp"
 #include "particle_filter.hpp"
@@ -28,8 +29,10 @@ public:
     }
 
     void odomUpdate() {
+        unsigned long long start = pros::micros();
         constexpr bool radians = false;
 
+        // Get the change in movement
         const lemlib::Pose before = getPose(radians);
         lemlib::update();
         const lemlib::Pose after = getPose(radians);
@@ -54,12 +57,21 @@ public:
             return Eigen::Rotation2Df(noisyAngleDelta) * Eigen::Vector2f({noisyX, noisyY});
         });
 
+        // Set the pose to be the filters prediction
         const auto prediction = pf->getPrediction();
         setPose(prediction.x(), prediction.y(), after.theta, radians, false);
+
+        updateTimeMicros = pros::micros() - start;
+    }
+
+    bool isOdomTooSlow() const {
+        // If the odom is taking more than 10ms it is too slow
+        return updateTimeMicros > 10000;
     }
 
 protected:
     std::unique_ptr<ParticleFilter<N>> pf;
+    unsigned long long updateTimeMicros= 0;
 };
 
 
