@@ -64,7 +64,7 @@ public:
         updateTimeMicros = pros::micros() - start;
     }
 
-    bool isOdomTooSlow() const {
+    [[nodiscard]] bool isOdomTooSlow() const {
         // If the odom is taking more than 10ms it is too slow
         return updateTimeMicros > 10000;
     }
