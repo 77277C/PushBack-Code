@@ -35,10 +35,10 @@ public:
         const lemlib::Pose after = getPose(radians);
         const lemlib::Pose change = after - before;
 
-        std::uniform_real_distribution xDistribution(change.x - DRIVE_NOISE * change.x,
-                                                    change.x + DRIVE_NOISE * change.x);
-        std::uniform_real_distribution yDistribution(change.y - DRIVE_NOISE * change.y,
-                                                    change.y + DRIVE_NOISE * change.y);
+        std::uniform_real_distribution<> xDistribution{change.x - DRIVE_NOISE * std::fabs(change.x),
+                                                          change.x + DRIVE_NOISE * std::fabs(change.x)};
+        std::uniform_real_distribution<> yDistribution{change.y - DRIVE_NOISE * std::fabs(change.y),
+                                                    change.y + DRIVE_NOISE * std::fabs(change.y)};
 
         // Angle distribution doesn't factor in current theta because odom change is already rotated
         // to be in (x, y) format

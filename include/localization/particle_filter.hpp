@@ -38,8 +38,7 @@ public:
             particle.location += getPrediction();
         }
 
-        distanceSinceUpdate = getPrediction().norm();
-
+        distanceSinceUpdate += getPrediction().norm();
         // Return if robot hasn't moved to avoid particle convergence
         if (
             distanceSinceUpdate < 2.0
@@ -48,9 +47,6 @@ public:
             prediction = formPrediction();
             return;
         }
-
-        // Update readings on all sensors
-        updateSensors();
 
         auto angle = getAngle();
         for (size_t i = 0; i < N; i++) {
@@ -86,12 +82,6 @@ public:
         }
 
         return combinedWeight;
-    }
-
-    void updateSensors() {
-        for (const auto& sensor : sensors) {
-            sensor->update();
-        }
     }
 
     static bool isPoseInField(const Eigen::Vector2f& pose) {
