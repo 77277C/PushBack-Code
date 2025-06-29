@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "pros/rtos.hpp"
 #include "lemlib/api.hpp"
 #include "lemlib/chassis/odom.hpp"
@@ -11,18 +9,20 @@
 template<size_t N>
 class ParticleFilterChassis: public lemlib::Chassis {
 public:
-    explicit ParticleFilterChassis(lemlib::Drivetrain drivetrain, lemlib::ControllerSettings linearSettings, lemlib::ControllerSettings angularSettings,
-                lemlib::OdomSensors odomSensors,  std::vector<std::unique_ptr<Distance>>& pfSensors, lemlib::DriveCurve* throttleCurve = &lemlib::defaultDriveCurve,
-                lemlib::DriveCurve* steerCurve = &lemlib::defaultDriveCurve)
-                    : Chassis(drivetrain, linearSettings, angularSettings, odomSensors, throttleCurve,
-                        steerCurve) {
-        pf = std::make_unique<ParticleFilter<N>>(pfSensors);
-    }
+    explicit ParticleFilterChassis(
+        lemlib::Drivetrain drivetrain,
+        lemlib::ControllerSettings linearSettings,
+        lemlib::ControllerSettings angularSettings,
+        lemlib::OdomSensors odomSensors,
+        const std::vector<Distance*>& pfSensors, lemlib::DriveCurve* throttleCurve = &lemlib::defaultDriveCurve,
+        lemlib::DriveCurve* steerCurve = &lemlib::defaultDriveCurve
+    ) : Chassis(drivetrain, linearSettings, angularSettings, odomSensors, throttleCurve,
+                        steerCurve), pf(ParticleFilter<N>(pfSensors)) {}
 
     void setPose(float x, float y, float theta, bool radians = false, bool resetParticles = true) {
         Chassis::setPose(x, y, theta, radians);
         if (resetParticles) {
-            pf->initNormDist({x, y, getPose(true, true).theta});
+            pf.initNormDist({x, y, getPose(true, true).theta});
         }   
     }
 
@@ -42,19 +42,18 @@ public:
         std::uniform_real_distribution angleDistribution(change.theta - ANGLE_NOISE * std::fabs(change.theta),
                                                           change.theta + ANGLE_NOISE * std::fabs(change.theta));
 
-        static auto randomGen = pf->getRandomGen();
+        static auto& randomGen = pf.getRandomGen();
 
-        pf->update([&]() {
+        pf.update([&]() {
             const auto noisyX = xDistribution(randomGen);
             const auto noisyY = yDistribution(randomGen);
             const auto noisyTheta = angleDistribution(randomGen);
 
-            // Create a vector from noisyX and noisyY and rotate it by possible angular noise
             return Eigen::Vector3f(noisyX, noisyY, noisyTheta);
         });
 
         // Set the pose to be the filters prediction
-        const auto prediction = pf->getPrediction();
+        const auto prediction = pf.getPrediction();
         setPose(prediction.x(), prediction.y(), M_PI_2 - prediction.z(), true, false);
 
         updateTimeMicros = pros::micros() - start;
@@ -66,8 +65,8 @@ public:
     }
 
 protected:
-    std::unique_ptr<ParticleFilter<N>> pf;
-    unsigned long long updateTimeMicros= 0;
+    ParticleFilter<N> pf;
+    unsigned long long updateTimeMicros = 0;
 };
 
 

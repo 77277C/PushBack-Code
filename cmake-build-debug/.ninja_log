@@ -1,0 +1,14 @@
+# ninja log v6
+15	2079	7627740287658578	CMakeFiles/PROS_Project.dir/src/devices.cpp.obj	45aeba8786abb9a6
+80	2888	7542891600999104	CMakeFiles/PROS_Project.dir/src/qlib/pose.cpp.obj	f39e385b4faac229
+18	691	7547086484881634	CMakeFiles/PROS_Project.dir/src/console.cpp.obj	4bc1e19998bf66cc
+84	2890	7542891601041212	CMakeFiles/PROS_Project.dir/src/qlib/tracking_wheel.cpp.obj	68a5ef08c0baa49f
+29	2884	7542891600482008	CMakeFiles/PROS_Project.dir/src/qlib/controller.cpp.obj	7f9510ff29953196
+1	51	7728481197165382	build.ninja	a3be36d6e613244b
+35	2876	7542891600553191	CMakeFiles/PROS_Project.dir/src/qlib/drivetrain.cpp.obj	d36bded3e9b9c79e
+20	2076	7627740287708761	CMakeFiles/PROS_Project.dir/src/drivecurve.cpp.obj	45376de1a107edcd
+77	2889	7542891600968431	CMakeFiles/PROS_Project.dir/src/qlib/odometry.cpp.obj	a26ab561343e7b01
+42	2617	7542010075250604	CMakeFiles/PROS_Project.dir/src/autons.cpp.obj	be0cef60ef806316
+59	2649	7542010075423607	CMakeFiles/PROS_Project.dir/src/main.cpp.obj	277045072cf4713d
+38	2886	7542891600585019	CMakeFiles/PROS_Project.dir/src/qlib/motions.cpp.obj	d7cd1b210601473
+1	48	7542050451764454	dummy.exe	8f044248e360e438
