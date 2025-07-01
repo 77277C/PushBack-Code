@@ -93,6 +93,8 @@ public:
             oldParticles[i] = particles[i];
         }
 
+        if (totalWeight == 0.0) return;
+
         // Compute the average weight across all particles.
         // This defines the spacing between our sampling points on the pie chart.
         const float avgWeight = totalWeight / static_cast<float>(N);
