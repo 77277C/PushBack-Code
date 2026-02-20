@@ -817,7 +817,7 @@ void skillsStart(){
 
     chassis.waitUntilDone();
     subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL);
-    pros::delay(1650); //2000 to 1650 decrease if need more time to 1700
+    pros::delay(1300); //2000 to 1650 decrease if need more time to 1700
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
 
     subsystems::matchload::extend();
@@ -903,7 +903,7 @@ void skillsTwo(){
     subsystems::intake::run(subsystems::intake::GoalType::LONG_GOAL);
     pros::delay(25);
     chassis.tank(-127,-127);
-    pros::delay(2200);
+    pros::delay(2500);
     skillsThree();
 }
 
@@ -941,7 +941,7 @@ void skillsThree(){
     subsystems::intake::run(subsystems::intake::GoalType::LONG_GOAL); // long slow to long
     chassis.waitUntilDone();
     chassis.tank(-127,-127);
-    pros::delay(2150); //2100 to 2150
+    pros::delay(2350); //2100 to 2150
     chassis.tank(0,0);
     hoodPush();
     // chassis.setPose(28, 44, 90); // deleted for more accuracy
