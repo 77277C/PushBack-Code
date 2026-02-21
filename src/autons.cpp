@@ -806,16 +806,16 @@ void skillsStart(){
 
     //start
     chassis.setPose(-48, 14.5, 90);
-    chassis.moveToPoint(-32, 17, 1800, {.maxSpeed = 60});
+    chassis.moveToPoint(-31, 17, 1800, {.maxSpeed = 60});
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
     chassis.waitUntilDone();
-    pros::delay(350); //400 to 350
+    pros::delay(0); //400 to 350
 
     chassis.moveToPose(-9, 6, 315,  2000, {.forwards = false, .maxSpeed = 80});
 
     chassis.waitUntilDone();
     subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL);
-    pros::delay(1300); //2000 to 1650 decrease if need more time to 1700
+    pros::delay(1100); //2000 to 1650 decrease if need more time to 1700
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
 
     subsystems::matchload::extend();
@@ -1003,25 +1003,24 @@ void skillsFour() {
     chassis.waitUntilDone();
     //move toward middle goal
     subsystems::matchload::extend();
-    chassis.moveToPose(11, -11, 135, 2000, {.forwards = false, .lead = 0.3, .maxSpeed = 40});
+    chassis.moveToPose(11, -11, 135, 2000, {.forwards = false, .lead = 0.3, .maxSpeed = 40, .minSpeed = 10, .earlyExitRange = 1});
     chassis.waitUntilDone();
 
-    //slight turn to be in same angle as middle goal
-    chassis.waitUntilDone();
     subsystems::intake::run(subsystems::intake::GoalType::LOW_GOAL);
-    pros::delay(150); //200 to 100
-
+    pros::delay(50);
     // in middle goal
     subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL_SLOW);
     chassis.tank(-30, -30);
-    pros::delay(1500);
+    pros::delay(2000);
+    subsystems::intake::run(subsystems::intake::GoalType::LOW_GOAL);
+    pros::delay(100);
     subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL);
-    pros::delay(1500);
+    pros::delay(900);
 
-    subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
 
     chassis.moveToPoint(40, -49, 2000, {.maxSpeed = 80});
     chassis.waitUntilDone();
+    subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
     subsystems::matchload::extend(); // not needed
 
     chassis.moveToPose(61, -51, 90,  1000, {.maxSpeed = 65, .minSpeed = 60, .earlyExitRange = 1.5});
