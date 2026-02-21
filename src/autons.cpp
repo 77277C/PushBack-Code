@@ -833,7 +833,7 @@ void skillsStart(){
 
     chassis.waitUntil(10);
     chassis.cancelMotion();
-    chassis.moveToPoint(-67.5, 46, 1000, {.maxSpeed = 50, .minSpeed = 40, .earlyExitRange = 1.5}); //46 to 47 and 450 to 700
+    chassis.moveToPoint(-67.5, 46, 00, {.maxSpeed = 50, .minSpeed = 40, .earlyExitRange = 1.5}); //46 to 47 and 450 to 700 and 1000 to 900
     
     // facing goal
     chassis.waitUntilDone();
@@ -866,7 +866,7 @@ void skillsStart(){
     pros::delay(50);
     chassis.tank(-127,-127);
     // outtaking into goal
-    pros::delay(2200); //2200 to 2000
+    pros::delay(2300); //2200 to 2300
     skillsThree();
 
 }
@@ -1011,12 +1011,14 @@ void skillsFour() {
     // in middle goal
     subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL_SLOW);
     chassis.tank(-30, -30);
-    pros::delay(2000);
+    pros::delay(1500);
     subsystems::intake::run(subsystems::intake::GoalType::LOW_GOAL);
     pros::delay(100);
     subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL);
-    pros::delay(900);
-
+    pros::delay(1500); //900 to 1500
+    subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL_SLOW);
+    pros::delay(500);
+    // 3600
 
     chassis.moveToPoint(40, -49, 2000, {.maxSpeed = 80});
     chassis.waitUntilDone();
@@ -1032,7 +1034,7 @@ void skillsFour() {
     chassis.waitUntilDone();
     chassis.tank(30, 30);
     // into 3rd matchloader
-    pros::delay(1600); //2000 to 1600
+    pros::delay(1700); //2000 to 1700
     chassis.tank(0,0);
 
     chassis.moveToPoint(50, -50, 2000, {.forwards = false, .maxSpeed = 70, .minSpeed = 50, .earlyExitRange = 1});
@@ -1075,7 +1077,7 @@ void skillsFive() {
 
     chassis.swingToHeading(180, lemlib::DriveSide::RIGHT, 1000, {.direction = lemlib::AngularDirection::CW_CLOCKWISE, .minSpeed = 30, .earlyExitRange = 3});
     // clear park zone
-    chassis.moveToPoint(70, 4, 2000, {.maxSpeed = 100, .minSpeed = 100, .earlyExitRange = 1.5}); //3 to 4
+    chassis.moveToPoint(70, 2.75, 2000, {.maxSpeed = 127, .minSpeed = 110, .earlyExitRange = 1.5}); //4 to 5.25
     chassis.waitUntilDone();
     pros::delay(100000);
 }
