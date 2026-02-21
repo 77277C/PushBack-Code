@@ -60,6 +60,7 @@ rd::Selector selector({
     {"Left", left},
     {"Right", right},
     {"Left2", betterLeft},
+    {"Left3", betterLeft2},
     {"RightElim", rightElim},
     {"Skills", skills},
     {"Tune", tunePid},
