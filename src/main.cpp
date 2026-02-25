@@ -59,6 +59,7 @@ rd::Selector selector({
     {"Solo AWP", solo_awp},
     {"Left", left},
     {"Right", right},
+    {"Left Rush", leftRush},
     {"Left2", betterLeft},
     {"Left3", betterLeft2},
     {"RightElim", rightElim},

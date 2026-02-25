@@ -4,6 +4,7 @@
 void solo_awp();
 void left();
 void right();
+void leftRush();
 void betterLeft();
 void betterLeft2();
 void hoodPush();
