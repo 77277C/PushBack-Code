@@ -156,12 +156,13 @@ void opcontrol() {
         // autos
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-            autonomous();
+            //autonomous();
             //solo_awp();
             //skillsStart();
             //rightElim();
             //skillsTwo();
             //skillsFour();
+            fourteen_awp();
             subsystems::intake::stop();
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
         }
