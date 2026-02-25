@@ -26,8 +26,13 @@ void example() {/*
 void fourteen_awp(){
     subsystems::wing::extend();
     chassis.setPose(-45.5, -1, 0);
-    chassis.moveToPoint(-45.5, 6, 1000, {. minSpeed = 50, .earlyExitRange = 1});
+    chassis.moveToPoint(-45.5, 6, 1000, {. minSpeed = 30, .earlyExitRange = 1});
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
+
+    chassis.moveToPoint(-45, -46.5, 2500, {.forwards = false, .maxSpeed = 60, .minSpeed = 5, .earlyExitRange = 1});
+    chassis.waitUntil(5);
+    chassis.cancelMotion();
+
 
     chassis.moveToPoint(-45, -46.5, 2500, {.forwards = false, .maxSpeed = 100, .minSpeed = 5, .earlyExitRange = 1});
     subsystems::matchload::extend();
@@ -44,7 +49,7 @@ void fourteen_awp(){
 
 
     chassis.moveToPoint(-33, -48, 1900, {.forwards = false, .maxSpeed = 95, .minSpeed = 50, .earlyExitRange = 1});
-    chassis.waitUntil(9);
+    chassis.waitUntil(12);
     subsystems::intake::run(subsystems::intake::GoalType::LONG_GOAL);
 
     chassis.cancelMotion();
@@ -55,7 +60,7 @@ void fourteen_awp(){
     
     chassis.tank(-100, -100);
 
-    pros::delay(1650);
+    pros::delay(1700);
 
     chassis.setPose(-31, -41.5, chassis.getPose().theta);
     pros::delay(50);
@@ -82,7 +87,7 @@ void fourteen_awp(){
     subsystems::matchload::extend();
     
     chassis.moveToPose(-13, 12, 315, 1500, {.forwards = false, .maxSpeed = 60, .earlyExitRange = 4});
-    chassis.waitUntil(12);
+    chassis.waitUntil(15);
 
     subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL);
 
@@ -104,11 +109,11 @@ void fourteen_awp(){
     chassis.moveToPoint(-71.75, 52, 1000, {.maxSpeed = 55, .minSpeed = 40, .earlyExitRange = 2});
     chassis.waitUntilDone();
     chassis.tank(50,50);
-    pros::delay(300);
+    pros::delay(350);
     chassis.tank(0,0);  
     
     chassis.moveToPoint(-10, 54, 1000, {.forwards = false, .maxSpeed = 100, .minSpeed = 40, .earlyExitRange = 1});
-    chassis.waitUntil(12);
+    chassis.waitUntil(15);
     chassis.cancelMotion();
 
     chassis.moveToPoint(-10, 54, 200, {.forwards = false, .maxSpeed = 70, .minSpeed = 25, .earlyExitRange = 1}); //52.35 to 53
