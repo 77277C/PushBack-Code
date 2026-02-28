@@ -57,7 +57,8 @@ localization::UpgradedChassis<PARTICLES> chassis(drivetrain, linearSettings, ang
 
 rd::Selector selector({
     {"13 AWP", thirteen_awp},
-    {"14 AWP", thirteen_awp},
+    {"14 AWP", fourteen_awp},
+    {"left 9 w/wing", left_9_wing},
     // {"Left", left},
     {"Right", right},
     {"Left Mid Rush", left_mid_rush},
@@ -159,6 +160,8 @@ void opcontrol() {
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
             autonomous();
+            //left_9_wing();
+            //left_9_hold();
             //solo_awp();
             //skillsStart();
             //rightElim();

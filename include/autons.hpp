@@ -20,3 +20,5 @@ void skillsOne();
 void skillsThree();
 void skillsFour();
 void skillsFive();
+void left_9_wing();
+void left_9_hold();
