@@ -29,3 +29,6 @@ void skillsFive();
 
 void skills_100();
 void skills_1();
+void skills_2();
+void skills_3();
+void skills_4();

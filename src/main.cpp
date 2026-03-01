@@ -75,6 +75,12 @@ rd::Selector selector({
     // {"Tune", tunePid},
     {"Wing", wing_balls},
 
+    {"Skills 100", skills_100},
+    {"Skills 1", skills_1},
+    {"Skills 2", skills_2},
+    {"Skills 3", skills_3},
+    {"Skills 4", skills_4},
+
     {"Skills 96", skills_96},
     {"SkillsOne", skillsOne}, 
     // {"SkillsTwo", skillsTwo}, 
