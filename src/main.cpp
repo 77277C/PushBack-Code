@@ -58,16 +58,24 @@ localization::UpgradedChassis<PARTICLES> chassis(drivetrain, linearSettings, ang
 rd::Selector selector({
     {"13 AWP", thirteen_awp},
     {"14 AWP", fourteen_awp},
+
+    {"Left ML Rush", left_ml_rush},
+    {"RIght ML Rush", right_ml_rush},
+
     {"left 9 w/wing", left_9_wing},
+    {"left 9 w/o wing", left_9_no_wing},
+    {"left 9 hold", left_9_hold},
     // {"Left", left},
-    {"Right", right},
     {"Left Mid Rush", left_mid_rush},
-    {"Left w/ wing", left_w_wing},
-    {"Left w/o wing", left_no_wing},
+    {"Left 7 w/ wing", left_7_w_wing},
+    {"Left 7 w/o wing", left_7_no_wing},
+
+    {"Right", right},
     {"RightElim", rightElim},
-    {"Skills 96", skills_96},
     // {"Tune", tunePid},
     {"Wing", wing_balls},
+
+    {"Skills 96", skills_96},
     {"SkillsOne", skillsOne}, 
     // {"SkillsTwo", skillsTwo}, 
     {"SkillsThree", skillsThree}, 
