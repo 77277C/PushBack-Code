@@ -174,7 +174,7 @@ void opcontrol() {
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
             // autonomous();
-            skills_1();
+            skills_3();
             //left_9_wing();
             //left_9_hold();
             //solo_awp();
