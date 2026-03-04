@@ -464,7 +464,7 @@ void left_9_wing() {
     chassis.waitUntilDone();
 
     subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL);
-    pros::delay(1250); // 1500 to 1000
+    pros::delay(1500); // 1500 to 1000
     subsystems::intake::stop();
 
     
