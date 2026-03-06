@@ -1340,7 +1340,7 @@ void skillsOne(){
 
     chassis.waitUntil(10);
     chassis.cancelMotion();
-    chassis.moveToPoint(-67.5, 46, 00, {.maxSpeed = 50, .minSpeed = 40, .earlyExitRange = 1.5}); //46 to 47 and 450 to 700 and 1000 to 900
+    chassis.moveToPoint(-67.5, 46, 900, {.maxSpeed = 50, .minSpeed = 40, .earlyExitRange = 1.5}); //46 to 47 and 450 to 700 and 1000 to 900
     
     // facing goal
     chassis.waitUntilDone();
