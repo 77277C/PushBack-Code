@@ -81,7 +81,7 @@ void subsystems::intake::iterate(GoalType goalType) {
             upperIntakeMotor.move(95);
     }
 
-    if (pros::millis() - changedModeAt > 750 && lowerIntakeMotor.get_efficiency() < 0.1) {
+    if (pros::millis() - changedModeAt > 750 && lowerIntakeMotor.get_efficiency() < 0.5) {
         antiJam = true;
         startJam = pros::millis();
     }
