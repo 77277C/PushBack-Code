@@ -56,6 +56,7 @@ localization::UpgradedChassis<PARTICLES> chassis(drivetrain, linearSettings, ang
 
 
 rd::Selector selector({
+    {"Skills 96", skills_96},
     {"13 AWP", thirteen_awp},
     {"14 AWP", fourteen_awp},
 
@@ -81,7 +82,7 @@ rd::Selector selector({
     {"Skills 3", skills_3},
     {"Skills 4", skills_4},
 
-    {"Skills 96", skills_96},
+    // {"Skills 96", skills_96},
     {"SkillsOne", skillsOne}, 
     // {"SkillsTwo", skillsTwo}, 
     {"SkillsThree", skillsThree}, 
@@ -174,7 +175,7 @@ void opcontrol() {
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
             autonomous();
-            // skills_3();
+            // skills_1();
             //left_9_wing();
             //left_9_hold();
             //solo_awp();
