@@ -27,8 +27,10 @@ void skillsThree();
 void skillsFour();
 void skillsFive();
 
+void skills_98();
 void skills_100();
 void skills_1();
 void skills_2();
 void skills_3();
 void skills_4();
+void hoodPush_100();
