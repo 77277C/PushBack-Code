@@ -60,8 +60,8 @@ rd::Selector selector({
     {"13 AWP", thirteen_awp},
     {"14 AWP", fourteen_awp},
 
-    {"Left ML Rush", left_ml_rush},
-    {"RIght ML Rush", right_ml_rush},
+    {"Left ML Rush (awp align)", left_ml_rush},
+    {"RIght ML Rush (awp align)", right_ml_rush},
 
     {"left 9 w/wing", left_9_wing},
     {"left 9 w/o wing", left_9_no_wing},
@@ -74,7 +74,7 @@ rd::Selector selector({
     {"Right", right},
     {"RightElim", rightElim},
     // {"Tune", tunePid},
-    {"Wing", wing_balls},
+    {"Wing balls", wing_balls},
 
     {"Skills 98", skills_98},
     {"Skills 1", skills_1},
