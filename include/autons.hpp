@@ -6,16 +6,12 @@ void fourteen_awp();
 
 // void left();
 void left_ml_rush();
-void left_mid_rush();
 void left_7_w_wing();
 void left_7_no_wing();
 void left_9_wing();
 void left_9_no_wing();
-void left_9_hold();
 
 void right_ml_rush();
-void right();
-void rightElim();
 
 void hoodPush();
 void wing_balls();
@@ -28,9 +24,4 @@ void skillsFour();
 void skillsFive();
 
 void skills_98();
-void skills_100();
-void skills_1();
-void skills_2();
-void skills_3();
-void skills_4();
-void hoodPush_100();
+void skills98Start();
