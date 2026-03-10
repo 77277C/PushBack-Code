@@ -56,7 +56,6 @@ localization::UpgradedChassis<PARTICLES> chassis(drivetrain, linearSettings, ang
 
 
 rd::Selector selector({
-    {"Skills 100", skills_100},
     //{"13 AWP", thirteen_awp},
     {"14 AWP", fourteen_awp},
 
