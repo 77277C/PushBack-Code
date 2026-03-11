@@ -106,7 +106,7 @@ void initialize() {
 
             static pros::Motor lowerIntakeMotor(1, pros::MotorGears::rpm_600);
             controller.print(0, 0, "X: %.1f Y: %.1f θ: %.1f", pose.x, pose.y, pose.theta);
-            printf("%.1f, %.1f, %.1f, %d\n", pose.x, pose.y, pose.theta, pros::millis());
+            printf("%.2f\n", imu.get_roll());
             //controller.print(0, 0, "%.2f", lowerIntakeMotor.get_efficiency());
             pros::delay(10);
         }
@@ -171,7 +171,7 @@ void opcontrol() {
         // autos
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-            autonomous();
+            //autonomous();
             //thirteen_awp();
             //awp_part_two();
             // skills_1();
@@ -182,6 +182,7 @@ void opcontrol() {
             //rightElim();
             //skillsTwo();
             //skillsFour();
+            skillsFive();
             // fourteen_awp();
             subsystems::intake::stop();
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
