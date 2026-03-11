@@ -1338,11 +1338,11 @@ void skillsFour() {
     // in middle goal
     subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL_SLOW);
     chassis.tank(-20, -20);
-    pros::delay(2600);
+    pros::delay(1800);
     subsystems::intake::run(subsystems::intake::GoalType::LOW_GOAL);
-    pros::delay(200);
-    subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL);
-    pros::delay(1250); //1500 to 1000
+    pros::delay(150);
+    subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL_SLOW);
+    pros::delay(900); //1500 to 1000
 
 
     chassis.moveToPoint(40, -48, 2000, {.maxSpeed = 80});
