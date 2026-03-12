@@ -1136,8 +1136,8 @@ void skillsOne(){
     chassis.moveToPose(-9, 6, 315,  2000, {.forwards = false, .maxSpeed = 80});
 
     chassis.waitUntilDone();
-    subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL);
-    pros::delay(1100); //2000 to 1650 decrease if need more time to 1700
+    subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL_SLOW);
+    pros::delay(1000); //2000 to 1650 decrease if need more time to 1700
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
 
     subsystems::matchload::extend();
@@ -1188,7 +1188,7 @@ void skillsOne(){
     pros::delay(50);
     chassis.tank(-127,-127);
     // outtaking into goal
-    pros::delay(2200); //2200 to 2300
+    pros::delay(2000); //2200 to 2300
     skillsThree();
 
 }
@@ -1263,7 +1263,7 @@ void skillsThree(){
     subsystems::intake::run(subsystems::intake::GoalType::LONG_GOAL);
     chassis.waitUntilDone();
     chassis.tank(-127,-127);
-    pros::delay(2300); //2600 to 2400
+    pros::delay(2000); //2600 to 2400
     chassis.tank(0,0);
     hoodPush();
     // chassis.setPose(28, 44, 90);
@@ -1300,15 +1300,15 @@ void skillsFour() {
     pros::delay(100);
 
     // move to clear park zone
-    chassis.moveToPoint(60.5, 30, 2000, {.maxSpeed = 65, .minSpeed = 10, .earlyExitRange = 0.5});
+    chassis.moveToPoint(60.5, 30, 2000, {.maxSpeed = 65, .minSpeed = 10, .earlyExitRange = 1});
     chassis.waitUntilDone();
 
-    chassis.swingToHeading(160, lemlib::DriveSide::RIGHT, 1000, {.direction = lemlib::AngularDirection::CW_CLOCKWISE, .minSpeed = 30, .earlyExitRange = 3});
+    chassis.swingToHeading(170, lemlib::DriveSide::RIGHT, 1000, {.direction = lemlib::AngularDirection::CW_CLOCKWISE, .minSpeed = 30, .earlyExitRange = 3});
     // clear park zone
     chassis.moveToPoint(69, 25, 1000, {.maxSpeed = 90, .minSpeed = 80, .earlyExitRange = 1.5});
     chassis.waitUntil(2);
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
-    chassis.moveToPoint(68, -13, 3000, {.maxSpeed = 70}); //69 to 68 and 4000 to 3000 and 90 to 85 and -17 to -18.5
+    chassis.moveToPoint(68, -15, 3000, {.maxSpeed = 70}); //69 to 68 and 4000 to 3000 and 90 to 85 and -17 to -18.5
     chassis.waitUntilDone();
     pros::delay(50); //400 to 300
     subsystems::localization::leftDistanceReset(chassis, subsystems::localization::Wall::RIGHT_X);
@@ -1325,7 +1325,7 @@ void skillsFour() {
     chassis.waitUntilDone();
 
     //turn toward middle goal
-    chassis.moveToPoint(24, -24, 1000, {.forwards = false, .earlyExitRange = 1});
+    chassis.moveToPoint(24, -24, 1000, {.forwards = false, .minSpeed = 20, .earlyExitRange = 1});
     chassis.waitUntilDone();
     //move toward middle goal
     subsystems::matchload::extend();
@@ -1337,9 +1337,6 @@ void skillsFour() {
     subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL_SLOW);
     chassis.tank(-20, -20);
     pros::delay(2000);
-    subsystems::intake::run(subsystems::intake::GoalType::LOW_GOAL);
-    pros::delay(150);
-    chassis.tank(-40, -40);
     subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL_SLOWISH);
     pros::delay(2000); //1500 to 1000
 
@@ -1403,7 +1400,7 @@ void skillsFive() {
     chassis.moveToPoint(63, 30, 1500, {.maxSpeed = 65, .minSpeed = 30, .earlyExitRange = 2}); //61.5 to 61
     chassis.waitUntilDone();
 
-    chassis.swingToHeading(165, lemlib::DriveSide::LEFT, 1000, {.direction = lemlib::AngularDirection::CW_CLOCKWISE, .minSpeed = 30, .earlyExitRange = 3});
+    chassis.swingToHeading(170, lemlib::DriveSide::LEFT, 1000, {.direction = lemlib::AngularDirection::CW_CLOCKWISE, .minSpeed = 30, .earlyExitRange = 3});
     // clear park zone
     chassis.moveToPoint(67, 22, 4000, {.maxSpeed = 97, .minSpeed = 87, .earlyExitRange = 1.5}); //try 4.25 to 5 if doesn't work
 
