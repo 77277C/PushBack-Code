@@ -1146,16 +1146,16 @@ void skillsOne(){
     chassis.moveToPoint(-40, 43.5, 2000, {.maxSpeed = 80, .minSpeed = 10, .earlyExitRange = 1});
     chassis.waitUntilDone();
 
-    chassis.turnToPoint(-68, 46, 1600, {.maxSpeed = 60, .minSpeed = 60, .earlyExitRange = 2}); //44.5 to 46
+    chassis.turnToPoint(-68, 45.5, 1600, {.maxSpeed = 60, .minSpeed = 60, .earlyExitRange = 2}); //44.5 to 46
 
 
-    chassis.moveToPoint(-68, 46, 1000, {.maxSpeed = 60, .minSpeed = 60, .earlyExitRange = 1.5}); //44.5 to 46
+    chassis.moveToPoint(-68, 45.5, 1000, {.maxSpeed = 60, .minSpeed = 60, .earlyExitRange = 1.5}); //44.5 to 46
     subsystems::wing::toggle();
 
 
     chassis.waitUntil(10);
     chassis.cancelMotion();
-    chassis.moveToPoint(-67.5, 46, 750, {.maxSpeed = 50, .minSpeed = 40, .earlyExitRange = 1.5}); //46 to 47 and 450 to 700 and 1000 to 900
+    chassis.moveToPoint(-67.5, 45.5, 900, {.maxSpeed = 50, .minSpeed = 40, .earlyExitRange = 1.5}); //46 to 47 and 450 to 700 and 1000 to 900
     
     // facing goal
     chassis.waitUntilDone();
@@ -1347,14 +1347,14 @@ void skillsFour() {
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
     subsystems::matchload::extend(); // not needed
 
-    chassis.turnToPoint(61, -50.7,  1000, {.maxSpeed = 65, .minSpeed = 60, .earlyExitRange = 1.5});
+    chassis.turnToPoint(61, -48,  1000, {.maxSpeed = 65, .minSpeed = 60, .earlyExitRange = 1.5});
 
 
-    chassis.moveToPoint(61, -50.7,  1000, {.maxSpeed = 65, .minSpeed = 60, .earlyExitRange = 1.5});
+    chassis.moveToPoint(61, -48,  1000, {.maxSpeed = 65, .minSpeed = 60, .earlyExitRange = 1.5});
 
     chassis.waitUntil(10);
     chassis.cancelMotion();
-    chassis.moveToPoint(62, -50.7,  1000, {.maxSpeed = 60, .minSpeed = 45, .earlyExitRange = 1.5}); //61 to 62 and 525 to 1000 40 to 50
+    chassis.moveToPoint(62, -48,  1000, {.maxSpeed = 60, .minSpeed = 45, .earlyExitRange = 1.5}); //61 to 62 and 525 to 1000 40 to 50
 
     chassis.waitUntilDone();
     chassis.tank(35, 35);
@@ -1404,7 +1404,7 @@ void skillsFive() {
     // clear park zone
     chassis.moveToPoint(67, 22, 4000, {.maxSpeed = 97, .minSpeed = 87, .earlyExitRange = 1.5}); //try 4.25 to 5 if doesn't work
 
-    chassis.moveToPoint(70, 4.5, 4000, {.maxSpeed = 97, .minSpeed = 87, .earlyExitRange = 1.5}); //try 4.25 to 5 if doesn't work
+    chassis.moveToPoint(70, 6, 4000, {.maxSpeed = 97, .minSpeed = 87, .earlyExitRange = 1.5}); //try 4.25 to 5 if doesn't work
 
     pros::delay(100000);
 }
