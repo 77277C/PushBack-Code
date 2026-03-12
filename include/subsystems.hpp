@@ -18,6 +18,7 @@ namespace intake {
         LOW_GOAL,
         MEDIUM_GOAL,
         MEDIUM_GOAL_SLOW,
+        MEDIUM_GOAL_SLOWISH,
         HOLD_BALLS,
         LONG_GOAL,
         LONG_GOAL_SLOW,
