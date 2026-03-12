@@ -1338,7 +1338,7 @@ void skillsFour() {
     chassis.tank(-20, -20);
     pros::delay(2000);
     subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL_SLOWISH);
-    pros::delay(2000); //1500 to 1000
+    pros::delay(2500); //1500 to 1000
 
     chassis.tank(20, 20);
     pros::delay(300);
@@ -1347,14 +1347,14 @@ void skillsFour() {
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
     subsystems::matchload::extend(); // not needed
 
-    chassis.turnToPoint(61, -48,  1000, {.maxSpeed = 65, .minSpeed = 60, .earlyExitRange = 1.5});
+    chassis.turnToPoint(61, -47,  1000, {.maxSpeed = 65, .minSpeed = 60, .earlyExitRange = 1.5});
 
 
-    chassis.moveToPoint(61, -48,  1000, {.maxSpeed = 65, .minSpeed = 60, .earlyExitRange = 1.5});
+    chassis.moveToPoint(61, -47,  1000, {.maxSpeed = 65, .minSpeed = 60, .earlyExitRange = 1.5});
 
     chassis.waitUntil(10);
     chassis.cancelMotion();
-    chassis.moveToPoint(62, -48,  1000, {.maxSpeed = 60, .minSpeed = 45, .earlyExitRange = 1.5}); //61 to 62 and 525 to 1000 40 to 50
+    chassis.moveToPoint(62, -47,  1000, {.maxSpeed = 60, .minSpeed = 45, .earlyExitRange = 1.5}); //61 to 62 and 525 to 1000 40 to 50
 
     chassis.waitUntilDone();
     chassis.tank(35, 35);
@@ -1404,7 +1404,7 @@ void skillsFive() {
     // clear park zone
     chassis.moveToPoint(67, 22, 4000, {.maxSpeed = 97, .minSpeed = 87, .earlyExitRange = 1.5}); //try 4.25 to 5 if doesn't work
 
-    chassis.moveToPoint(70, 6, 4000, {.maxSpeed = 97, .minSpeed = 87, .earlyExitRange = 1.5}); //try 4.25 to 5 if doesn't work
+    chassis.moveToPoint(70, 8.75, 4000, {.maxSpeed = 97, .minSpeed = 87, .earlyExitRange = 1.5}); //try 4.25 to 5 if doesn't work
 
     pros::delay(100000);
 }
