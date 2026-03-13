@@ -1143,13 +1143,13 @@ void skillsOne(){
     subsystems::matchload::extend();
 
     //move away from center goal
-    chassis.moveToPoint(-40, 44.5, 2000, {.maxSpeed = 80, .earlyExitRange = 0.5});
+    chassis.moveToPoint(-40, 44.75, 2000, {.maxSpeed = 80, .earlyExitRange = 1});
     chassis.waitUntilDone();
 
-    chassis.turnToPoint(-68, 45.5, 1600, {.maxSpeed = 60, .earlyExitRange = 2}); //44.5 to 46
+    chassis.turnToPoint(-68, 45.75, 1600, {.maxSpeed = 60, .minSpeed = 15, .earlyExitRange = 5}); //44.5 to 46
 
 
-    chassis.moveToPoint(-68, 45.5, 1000, {.maxSpeed = 60, .minSpeed = 60, .earlyExitRange = 1.5}); //44.5 to 46
+    chassis.moveToPoint(-68, 45.75, 1000, {.maxSpeed = 60, .minSpeed = 60, .earlyExitRange = 1.5}); //44.5 to 46
     subsystems::wing::toggle();
 
 
@@ -1161,7 +1161,7 @@ void skillsOne(){
     chassis.waitUntilDone();
     chassis.tank(35, 35);
     // in matchloader
-    // pros::delay(200); //350 to 250
+     pros::delay(100); //350 to 250
     chassis.tank(0,0);
     
     // out of first matchloader
@@ -1247,12 +1247,12 @@ void skillsThree(){
 
     chassis.waitUntil(20);
     chassis.cancelMotion();
-    chassis.moveToPoint(67, 47, 1100, {.maxSpeed = 45, .minSpeed = 40, .earlyExitRange = 1.5});
+    chassis.moveToPoint(67.2, 47, 1100, {.maxSpeed = 45, .minSpeed = 40, .earlyExitRange = 1.5});
 
     chassis.waitUntilDone();
 
     // into matchloader 2
-    chassis.tank(50,50); // both nums to 25 from 20
+    chassis.tank(55,55); // both nums to 25 from 20
     pros::delay(900); //700 to 600
     chassis.tank(0,0);
 
@@ -1344,12 +1344,19 @@ void skillsFour() {
     pros::delay(2500); //1500 to 1000
 
     chassis.tank(22, 22);
+    pros::delay(75);
+
+    subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL);
+
+
     pros::delay(100);
-    subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
+    
+    chassis.tank(-18, -18);
 
     pros::delay(75);
-    chassis.tank(-18, -18);
-    pros::delay(250);
+    subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
+
+    pros::delay(175);
 
     chassis.moveToPoint(40, -46.5, 2000, {.maxSpeed = 80, .earlyExitRange = 0.5});
     chassis.waitUntilDone();
