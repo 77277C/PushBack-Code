@@ -35,6 +35,7 @@ namespace matchload {
     void extend();
     void retract();
     void toggle();
+    bool is_extended();
 }
 
 namespace wing {
@@ -47,6 +48,7 @@ namespace midGoalDescore {
     void extend();
     void retract();
     void toggle();
+    bool is_extended();
 }
 
 

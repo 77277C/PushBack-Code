@@ -160,12 +160,18 @@ void opcontrol() {
         // pneumatics
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)) {
             subsystems::matchload::toggle();
+            if (subsystems::matchload::is_extended()) {
+                subsystems::midGoalDescore::retract();
+            }
         }
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
             subsystems::wing::toggle();
         }
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
             subsystems::midGoalDescore::toggle();
+            if (subsystems::midGoalDescore::is_extended()) {
+                subsystems::matchload::retract();
+            }
         }
         
         // autos

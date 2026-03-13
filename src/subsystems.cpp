@@ -113,6 +113,11 @@ void subsystems::matchload::toggle() {
     matchloadPiston.toggle();
 }
 
+bool subsystems::matchload::is_extended() {
+    return matchloadPiston.is_extended();
+}
+
+
 void subsystems::wing::extend() {
     wingPiston.extend();
 }
@@ -135,6 +140,10 @@ void subsystems::midGoalDescore::retract() {
 
 void subsystems::midGoalDescore::toggle() {
     midGoalDescorePiston.toggle();
+}
+
+bool subsystems::midGoalDescore::is_extended() {
+    return midGoalDescorePiston.is_extended();
 }
 
 void subsystems::localization::leftDistanceReset(lemlib::Chassis& chassis, Wall wall) {
