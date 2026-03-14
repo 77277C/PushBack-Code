@@ -238,7 +238,7 @@ void competition_initialize() {}
  */
 void autonomous() {
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-    //selector.run_auton();
-    itCouldWork();
+    selector.run_auton();
+    //itCouldWork();
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 }
