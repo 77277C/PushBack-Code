@@ -87,6 +87,8 @@ rd::Selector selector({
     {"SkillsFive", skillsFive}
 });
 
+rd::Console console;
+
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 
@@ -106,9 +108,19 @@ void initialize() {
 
             static pros::Motor lowerIntakeMotor(1, pros::MotorGears::rpm_600);
             controller.print(0, 0, "X: %.1f Y: %.1f θ: %.1f", pose.x, pose.y, pose.theta);
-            printf("%.2f\n", imu.get_roll());
+            
+            for (double temp : leftMotors.get_temperature_all()) {
+                console.printf("%.0f ", temp);
+            }
+            for (double temp : rightMotors.get_temperature_all()) {
+                console.printf("%.0f ", temp);
+            }
+
+            console.printf("%.0f ", lowerIntakeMotor.get_temperature());
+            console.printf("%.0f", upperIntakeMotor.get_temperature());
+            console.println("");
             //controller.print(0, 0, "%.2f", lowerIntakeMotor.get_efficiency());
-            pros::delay(10);
+            pros::delay(100);
         }
     }};
     

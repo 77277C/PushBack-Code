@@ -1136,8 +1136,8 @@ void skillsOne(){
     chassis.moveToPose(-9, 6, 315,  2000, {.forwards = false, .maxSpeed = 80});
 
     chassis.waitUntilDone();
-    subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL_SLOW);
-    pros::delay(1000); //2000 to 1650 decrease if need more time to 1700
+    subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL_SLOWISH);
+    pros::delay(1200); //2000 to 1650 decrease if need more time to 1700
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
 
     subsystems::matchload::extend();
@@ -1321,7 +1321,7 @@ void skillsFour() {
     pros::delay(100);
 
     // getting extra ball
-    chassis.moveToPose(35.75, -22.25, 270, 4000); //35.25 to 36
+    chassis.moveToPose(35.5, -22, 270, 4000); //35.25 to 36
     chassis.waitUntilDone();
 
     //turn toward middle goal
@@ -1358,19 +1358,19 @@ void skillsFour() {
 
     pros::delay(175);
 
-    chassis.moveToPoint(40, -46.5, 2000, {.maxSpeed = 80, .earlyExitRange = 0.5});
+    chassis.moveToPoint(40, -47, 2000, {.maxSpeed = 80, .earlyExitRange = 0.5});
     chassis.waitUntilDone();
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
     subsystems::matchload::extend(); // not needed
 
-    chassis.turnToPoint(61, -46.5,  1000, {.maxSpeed = 65, .minSpeed = 60, .earlyExitRange = 1.5});
+    chassis.turnToPoint(61, -47,  1000, {.maxSpeed = 65, .minSpeed = 60, .earlyExitRange = 1.5});
 
 
-    chassis.moveToPoint(61, -46.5,  1000, {.maxSpeed = 65, .minSpeed = 60, .earlyExitRange = 1.5});
+    chassis.moveToPoint(61, -47,  1000, {.maxSpeed = 65, .minSpeed = 60, .earlyExitRange = 1.5});
 
     chassis.waitUntil(10);
     chassis.cancelMotion();
-    chassis.moveToPoint(62, -46.5,  1000, {.maxSpeed = 60, .minSpeed = 45, .earlyExitRange = 1.5}); //61 to 62 and 525 to 1000 40 to 50
+    chassis.moveToPoint(62, -47,  1000, {.maxSpeed = 60, .minSpeed = 45, .earlyExitRange = 1.5}); //61 to 62 and 525 to 1000 40 to 50
 
     chassis.waitUntilDone();
     chassis.tank(35, 35);

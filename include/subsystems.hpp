@@ -11,6 +11,9 @@
 #include "lemlib/chassis/chassis.hpp"
 #include "lemlib/util.hpp"
 
+extern pros::Motor lowerIntakeMotor;
+extern pros::Motor upperIntakeMotor;
+
 namespace subsystems {
 
 namespace intake {
