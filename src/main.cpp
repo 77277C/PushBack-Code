@@ -1,4 +1,5 @@
 #include "main.h"
+#include "autons.hpp"
 
 
 pros::MotorGroup leftMotors({-7, -8, -9}, pros::MotorCartridge::blue);
@@ -200,7 +201,7 @@ void opcontrol() {
             //rightElim();
             //skillsTwo();
             //skillsFour();
-            // skillsFive();
+            //skillsFive();
             // fourteen_awp();
             subsystems::intake::stop();
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
@@ -222,6 +223,7 @@ void disabled() {
 }
 
 /**
+
  * @brief Runs before autonomous mode in competition settings.
  *
  * This function is useful for setting up autonomous routines, such as
@@ -236,6 +238,7 @@ void competition_initialize() {}
  */
 void autonomous() {
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-    selector.run_auton();
+    //selector.run_auton();
+    itCouldWork();
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 }
