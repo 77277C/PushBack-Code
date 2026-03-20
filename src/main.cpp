@@ -116,9 +116,11 @@ void initialize() {
             for (double temp : rightMotors.get_temperature_all()) {
                 console.printf("%.0f ", temp);
             }
+            for (double temp : lowerIntakeMotor.get_temperature_all()) {
+                console.printf("%.0f ", temp);
+            }
 
-            console.printf("%.0f ", lowerIntakeMotor.get_temperature());
-            console.printf("%.0f", upperIntakeMotor.get_temperature());
+            console.printf("%.0f", scoringIntakeMotor.get_temperature());
             console.println("");
             //controller.print(0, 0, "%.2f", lowerIntakeMotor.get_efficiency());
             pros::delay(100);
@@ -148,12 +150,6 @@ void opcontrol() {
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
             goal = subsystems::intake::GoalType::LONG_GOAL;
         }
-        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
-            goal = subsystems::intake::GoalType::LONG_GOAL_SLOW;
-        }
-        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
-            goal = subsystems::intake::GoalType::MEDIUM_GOAL_SLOW;
-        }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
             goal = subsystems::intake::GoalType::MEDIUM_GOAL;
         }
@@ -164,10 +160,6 @@ void opcontrol() {
             goal = subsystems::intake::GoalType::LOW_GOAL;
         }
         subsystems::intake::iterate(goal);
-
-        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-            hoodPush();
-        }
 
 
         // pneumatics

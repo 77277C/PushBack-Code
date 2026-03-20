@@ -11,8 +11,8 @@
 #include "lemlib/chassis/chassis.hpp"
 #include "lemlib/util.hpp"
 
-extern pros::Motor lowerIntakeMotor;
-extern pros::Motor upperIntakeMotor;
+extern pros::MotorGroup lowerIntakeMotor;
+extern pros::Motor scoringIntakeMotor;
 
 namespace subsystems {
 
@@ -20,11 +20,8 @@ namespace intake {
     enum class GoalType {
         LOW_GOAL,
         MEDIUM_GOAL,
-        MEDIUM_GOAL_SLOW,
-        MEDIUM_GOAL_SLOWISH,
         HOLD_BALLS,
         LONG_GOAL,
-        LONG_GOAL_SLOW,
         NONE
     };
 

@@ -1,11 +1,11 @@
 #include "subsystems.hpp"
 
 
-pros::Motor lowerIntakeMotor(1, pros::MotorGears::rpm_600);
-pros::Motor upperIntakeMotor(-18, pros::MotorGears::rpm_600);
+pros::MotorGroup lowerIntakeMotor({1}, pros::MotorGears::rpm_600);
+pros::Motor scoringupperIntakeMotor(-18, pros::MotorGears::rpm_600);
 
 pros::adi::Pneumatics matchloadPiston('H',false);
-pros::adi::Pneumatics middleGoalPiston('F', true, true);
+pros::adi::Pneumatics holdBallsPiston('F', false, false);
 pros::adi::Pneumatics wingPiston('G', false, false);
 pros::adi::Pneumatics midGoalDescorePiston('E', false, false);
 
@@ -35,58 +35,44 @@ void subsystems::intake::iterate(GoalType goalType) {
     }
     previousMode = goalType;
 
-    if (pros::millis() - startJam > 50) {
+    if (pros::millis() - startJam > 100) {
         antiJam = false;
     }
     if (antiJam) {
         lowerIntakeMotor.move(-127);
-        upperIntakeMotor.move(-127);
+        scoringIntakeMotor.move(-127);
         return;
     }
 
     switch (goalType) {
         case GoalType::NONE:
-            middleGoalPiston.extend();
+            holdBallsPiston.retract();
             lowerIntakeMotor.brake();
-            upperIntakeMotor.brake();
+            scoringIntakeMotor.brake();
             return;
         case GoalType::LOW_GOAL:
-            middleGoalPiston.extend();
+            holdBallsPiston.retract();
             lowerIntakeMotor.move(-127);
-            upperIntakeMotor.move(-127);
+            scoringIntakeMotor.move(-127);
             return;
         case GoalType::MEDIUM_GOAL:
-            middleGoalPiston.retract();
+            holdBallsPiston.retract();
             lowerIntakeMotor.move(127);
-            upperIntakeMotor.move(-127);
-            break;
-        case GoalType::MEDIUM_GOAL_SLOW:
-            middleGoalPiston.retract();
-            lowerIntakeMotor.move_velocity(425);
-            upperIntakeMotor.move(-127); //110 to -127
-            break;
-        case GoalType::MEDIUM_GOAL_SLOWISH:
-            middleGoalPiston.retract();
-            lowerIntakeMotor.move_velocity(500);
-            upperIntakeMotor.move(-127); //110 to -127
+            scoringIntakeMotor.move(-127);
             break;
         case GoalType::HOLD_BALLS:
-            middleGoalPiston.extend();
+            holdBallsPiston.retract();
             lowerIntakeMotor.move(127);
-            upperIntakeMotor.move_velocity(-20); //-60 to -20
+            scoringupperIntakeMotor.move(127); //-60 to -20
             break;
         case GoalType::LONG_GOAL:
-            middleGoalPiston.extend();
+            holdBallsPiston.extend();
             lowerIntakeMotor.move(127);
-            upperIntakeMotor.move(127);
+            scoringupperIntakeMotor.move(127);
             break;
-        case GoalType::LONG_GOAL_SLOW:
-            middleGoalPiston.extend();
-            lowerIntakeMotor.move(127);
-            upperIntakeMotor.move(95);
     }
 
-    if (pros::millis() - changedModeAt > 750 && lowerIntakeMotor.get_efficiency() < 0.1) {
+    if (pros::millis() - changedModeAt > 250 && (lowerIntakeMotor.get_efficiency() < 0.1 || scoringupperIntakeMotor.get_efficiency() < 0.1)) {
         antiJam = true;
         startJam = pros::millis();
     }
