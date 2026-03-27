@@ -1,13 +1,13 @@
 #include "subsystems.hpp"
 
 
-pros::MotorGroup lowerIntakeMotor({1}, pros::MotorGears::rpm_600);
-pros::Motor scoringupperIntakeMotor(-18, pros::MotorGears::rpm_600);
+pros::MotorGroup lowerIntakeMotor({19, 20});
+pros::Motor scoringupperIntakeMotor(16, pros::MotorGears::rpm_200);
 
 pros::adi::Pneumatics matchloadPiston('H',false);
-pros::adi::Pneumatics holdBallsPiston('F', false, false);
-pros::adi::Pneumatics wingPiston('G', false, false);
-pros::adi::Pneumatics midGoalDescorePiston('E', false, false);
+pros::adi::Pneumatics holdBallsPiston('F', false);
+pros::adi::Pneumatics wingPiston('G', false);
+pros::adi::Pneumatics midGoalDescorePiston('E', false);
 
 std::shared_ptr<pros::Task> intakingTaskPtr = nullptr;
 

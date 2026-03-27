@@ -2,8 +2,8 @@
 #include "autons.hpp"
 
 
-pros::MotorGroup leftMotors({-7, -8, -9}, pros::MotorCartridge::blue);
-pros::MotorGroup rightMotors({2, 4, 5}, pros::MotorCartridge::blue);
+pros::MotorGroup leftMotors({-3, -4, -6}, pros::MotorCartridge::blue);
+pros::MotorGroup rightMotors({7, 8, 9}, pros::MotorCartridge::blue);
 lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 11.5,
     lemlib::Omniwheel::NEW_325, 450, 8);
 
