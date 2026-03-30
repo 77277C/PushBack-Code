@@ -1,15 +1,17 @@
 #include "subsystems.hpp"
 
 
-pros::Motor lowerIntakeMotor(1, pros::MotorGears::rpm_600);
-pros::Motor upperIntakeMotor(-18, pros::MotorGears::rpm_600);
+pros::MotorGroup lowerIntakeMotor({-19, 20});
+pros::Motor scoringIntakeMotor(-16, pros::MotorGears::rpm_200);
+pros::Optical intakeOpticalSensor(17);
 
 pros::adi::Pneumatics matchloadPiston('H',false);
-pros::adi::Pneumatics middleGoalPiston('F', true, true);
-pros::adi::Pneumatics wingPiston('G', false, false);
-pros::adi::Pneumatics midGoalDescorePiston('E', false, false);
+pros::adi::Pneumatics holdBallsPiston('F', false);
+pros::adi::Pneumatics wingPiston('G', false);
+pros::adi::Pneumatics midGoalDescorePiston('E', false);
 
 std::shared_ptr<pros::Task> intakingTaskPtr = nullptr;
+subsystems::intake::AllianceColor currentAllianceColor = subsystems::intake::AllianceColor::DISABLED;
 
 void subsystems::intake::run(GoalType goalType) {
     if (intakingTaskPtr) {
@@ -25,6 +27,12 @@ void subsystems::intake::run(GoalType goalType) {
 }
 
 void subsystems::intake::iterate(GoalType goalType) {
+    intakeOpticalSensor.set_integration_time(10);
+    intakeOpticalSensor.set_led_pwm(100);
+
+    static bool isSorting = false;
+    static int32_t startedSorting = pros::millis();
+
     static bool antiJam = false;
     static std::uint32_t startJam = 0;
     static GoalType previousMode = GoalType::NONE;
@@ -35,58 +43,61 @@ void subsystems::intake::iterate(GoalType goalType) {
     }
     previousMode = goalType;
 
-    if (pros::millis() - startJam > 50) {
+    if (pros::millis() - startJam > 100) {
         antiJam = false;
     }
     if (antiJam) {
         lowerIntakeMotor.move(-127);
-        upperIntakeMotor.move(-127);
+        scoringIntakeMotor.move(-127);
         return;
     }
 
     switch (goalType) {
         case GoalType::NONE:
-            middleGoalPiston.extend();
+            holdBallsPiston.retract();
             lowerIntakeMotor.brake();
-            upperIntakeMotor.brake();
+            scoringIntakeMotor.brake();
             return;
         case GoalType::LOW_GOAL:
-            middleGoalPiston.extend();
+            holdBallsPiston.retract();
             lowerIntakeMotor.move(-127);
-            upperIntakeMotor.move(-127);
+            scoringIntakeMotor.move(-127);
             return;
         case GoalType::MEDIUM_GOAL:
-            middleGoalPiston.retract();
+            holdBallsPiston.retract();
             lowerIntakeMotor.move(127);
-            upperIntakeMotor.move(-127);
-            break;
-        case GoalType::MEDIUM_GOAL_SLOW:
-            middleGoalPiston.retract();
-            lowerIntakeMotor.move_velocity(425);
-            upperIntakeMotor.move(-127); //110 to -127
-            break;
-        case GoalType::MEDIUM_GOAL_SLOWISH:
-            middleGoalPiston.retract();
-            lowerIntakeMotor.move_velocity(500);
-            upperIntakeMotor.move(-127); //110 to -127
+            scoringIntakeMotor.move(-127);
             break;
         case GoalType::HOLD_BALLS:
-            middleGoalPiston.extend();
+            holdBallsPiston.retract();
             lowerIntakeMotor.move(127);
-            upperIntakeMotor.move_velocity(-20); //-60 to -20
+            scoringIntakeMotor.move(127); //-60 to -20
             break;
         case GoalType::LONG_GOAL:
-            middleGoalPiston.extend();
             lowerIntakeMotor.move(127);
-            upperIntakeMotor.move(127);
+            double hue = intakeOpticalSensor.get_hue();
+            if (
+                    intakeOpticalSensor.get_proximity() > 200 &&
+                    ((currentAllianceColor == AllianceColor::RED && hue > 180 && hue < 260) ||
+                    (currentAllianceColor == AllianceColor::BLUE && (hue > 330 || hue < 30)))
+                ) {
+                isSorting = true;
+                startedSorting = pros::millis();
+            }
+
+            if (pros::millis() - startedSorting > 20) {
+                isSorting = false;
+            }
+
+            if (isSorting) {
+                scoringIntakeMotor.move(-127);
+            } else {
+                scoringIntakeMotor.move(127);
+            }
             break;
-        case GoalType::LONG_GOAL_SLOW:
-            middleGoalPiston.extend();
-            lowerIntakeMotor.move(127);
-            upperIntakeMotor.move(95);
     }
 
-    if (pros::millis() - changedModeAt > 750 && lowerIntakeMotor.get_efficiency() < 0.1) {
+    if (pros::millis() - changedModeAt > 500 && (lowerIntakeMotor.get_efficiency_all()[0] < 0.1 || lowerIntakeMotor.get_efficiency_all()[1] < 0.1) ) {
         antiJam = true;
         startJam = pros::millis();
     }
@@ -100,6 +111,35 @@ void subsystems::intake::stop() {
 
     iterate(GoalType::NONE);
 }
+
+std::string subsystems::intake::getAllianceColorAsString() {
+    if (currentAllianceColor == AllianceColor::RED) {
+        return "R";
+    }
+    if (currentAllianceColor == AllianceColor::BLUE) {
+        return "B";
+    }
+    if (currentAllianceColor == AllianceColor::DISABLED) {
+        return "D";
+    }
+}
+
+void subsystems::intake::setAllianceColor(AllianceColor color) {
+    currentAllianceColor = color;
+}
+
+void subsystems::intake::toggleAllianceColor() {
+    if (currentAllianceColor == AllianceColor::RED || currentAllianceColor == AllianceColor::DISABLED) {
+        setAllianceColor(AllianceColor::BLUE);
+    } else {
+        setAllianceColor(AllianceColor::RED);
+    }
+}
+
+void subsystems::intake::disableColorSort() {
+    setAllianceColor(AllianceColor::DISABLED);
+}
+
 
 void subsystems::matchload::extend() {
     matchloadPiston.extend();

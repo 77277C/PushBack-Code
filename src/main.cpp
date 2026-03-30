@@ -2,8 +2,8 @@
 #include "autons.hpp"
 
 
-pros::MotorGroup leftMotors({-7, -8, -9}, pros::MotorCartridge::blue);
-pros::MotorGroup rightMotors({2, 4, 5}, pros::MotorCartridge::blue);
+pros::MotorGroup leftMotors({-7, -5, -4}, pros::MotorCartridge::blue);
+pros::MotorGroup rightMotors({8, 9, 10}, pros::MotorCartridge::blue);
 lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 11.5,
     lemlib::Omniwheel::NEW_325, 450, 8);
 
@@ -106,9 +106,8 @@ void initialize() {
     pros::Task{[&]() {
         while (true) {     
             lemlib::Pose pose = chassis.getPose(false, false);
-
-            static pros::Motor lowerIntakeMotor(1, pros::MotorGears::rpm_600);
-            controller.print(0, 0, "X: %.1f Y: %.1f θ: %.1f", pose.x, pose.y, pose.theta);
+            controller.print(0, 0, "%s X: %.1f Y: %.1f θ: %.1f",
+            subsystems::intake::getAllianceColorAsString().c_str(), pose.x, pose.y, pose.theta);
             
             for (double temp : leftMotors.get_temperature_all()) {
                 console.printf("%.0f ", temp);
@@ -116,9 +115,11 @@ void initialize() {
             for (double temp : rightMotors.get_temperature_all()) {
                 console.printf("%.0f ", temp);
             }
+            for (double temp : lowerIntakeMotor.get_temperature_all()) {
+                console.printf("%.0f ", temp);
+            }
 
-            console.printf("%.0f ", lowerIntakeMotor.get_temperature());
-            console.printf("%.0f", upperIntakeMotor.get_temperature());
+            console.printf("%.0f", scoringIntakeMotor.get_temperature());
             console.println("");
             //controller.print(0, 0, "%.2f", lowerIntakeMotor.get_efficiency());
             pros::delay(100);
@@ -148,12 +149,6 @@ void opcontrol() {
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
             goal = subsystems::intake::GoalType::LONG_GOAL;
         }
-        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
-            goal = subsystems::intake::GoalType::LONG_GOAL_SLOW;
-        }
-        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
-            goal = subsystems::intake::GoalType::MEDIUM_GOAL_SLOW;
-        }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
             goal = subsystems::intake::GoalType::MEDIUM_GOAL;
         }
@@ -165,8 +160,12 @@ void opcontrol() {
         }
         subsystems::intake::iterate(goal);
 
-        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-            hoodPush();
+        // intake colorsort
+        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
+            subsystems::intake::toggleAllianceColor();
+        }
+        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+            subsystems::intake::disableColorSort();
         }
 
 
@@ -205,9 +204,6 @@ void opcontrol() {
             // fourteen_awp();
             subsystems::intake::stop();
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
-        }
-        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
-            subsystems::localization::leftDistanceReset(chassis, subsystems::localization::Wall::BOTTOM_Y);
         }
 
         pros::delay(10);
