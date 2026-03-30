@@ -20,10 +20,23 @@ namespace intake {
     enum class GoalType {
         LOW_GOAL,
         MEDIUM_GOAL,
+        MEDIUM_GOAL_SLOWISH,
+        MEDIUM_GOAL_SLOW,
         HOLD_BALLS,
         LONG_GOAL,
         NONE
     };
+
+    enum class AllianceColor {
+        RED,
+        BLUE,
+        DISABLED
+    };
+
+    std::string getAllianceColorAsString();
+    void setAllianceColor(AllianceColor color);
+    void toggleAllianceColor();
+    void disableColorSort();
 
     void run(GoalType goal);
     void iterate(GoalType goal);

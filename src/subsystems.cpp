@@ -1,8 +1,9 @@
 #include "subsystems.hpp"
 
 
-pros::MotorGroup lowerIntakeMotor({19, 20});
-pros::Motor scoringupperIntakeMotor(16, pros::MotorGears::rpm_200);
+pros::MotorGroup lowerIntakeMotor({-19, 20});
+pros::Motor scoringIntakeMotor(-16, pros::MotorGears::rpm_200);
+pros::Optical intakeOpticalSensor(17);
 
 pros::adi::Pneumatics matchloadPiston('H',false);
 pros::adi::Pneumatics holdBallsPiston('F', false);
@@ -10,6 +11,7 @@ pros::adi::Pneumatics wingPiston('G', false);
 pros::adi::Pneumatics midGoalDescorePiston('E', false);
 
 std::shared_ptr<pros::Task> intakingTaskPtr = nullptr;
+subsystems::intake::AllianceColor currentAllianceColor = subsystems::intake::AllianceColor::DISABLED;
 
 void subsystems::intake::run(GoalType goalType) {
     if (intakingTaskPtr) {
@@ -25,6 +27,12 @@ void subsystems::intake::run(GoalType goalType) {
 }
 
 void subsystems::intake::iterate(GoalType goalType) {
+    intakeOpticalSensor.set_integration_time(10);
+    intakeOpticalSensor.set_led_pwm(100);
+
+    static bool isSorting = false;
+    static int32_t startedSorting = pros::millis();
+
     static bool antiJam = false;
     static std::uint32_t startJam = 0;
     static GoalType previousMode = GoalType::NONE;
@@ -63,16 +71,33 @@ void subsystems::intake::iterate(GoalType goalType) {
         case GoalType::HOLD_BALLS:
             holdBallsPiston.retract();
             lowerIntakeMotor.move(127);
-            scoringupperIntakeMotor.move(127); //-60 to -20
+            scoringIntakeMotor.move(127); //-60 to -20
             break;
         case GoalType::LONG_GOAL:
-            holdBallsPiston.extend();
             lowerIntakeMotor.move(127);
-            scoringupperIntakeMotor.move(127);
+            double hue = intakeOpticalSensor.get_hue();
+            if (
+                    intakeOpticalSensor.get_proximity() > 200 &&
+                    ((currentAllianceColor == AllianceColor::RED && hue > 180 && hue < 260) ||
+                    (currentAllianceColor == AllianceColor::BLUE && (hue > 330 || hue < 30)))
+                ) {
+                isSorting = true;
+                startedSorting = pros::millis();
+            }
+
+            if (pros::millis() - startedSorting > 20) {
+                isSorting = false;
+            }
+
+            if (isSorting) {
+                scoringIntakeMotor.move(-127);
+            } else {
+                scoringIntakeMotor.move(127);
+            }
             break;
     }
 
-    if (pros::millis() - changedModeAt > 250 && (lowerIntakeMotor.get_efficiency() < 0.1 || scoringupperIntakeMotor.get_efficiency() < 0.1)) {
+    if (pros::millis() - changedModeAt > 500 && (lowerIntakeMotor.get_efficiency_all()[0] < 0.1 || lowerIntakeMotor.get_efficiency_all()[1] < 0.1) ) {
         antiJam = true;
         startJam = pros::millis();
     }

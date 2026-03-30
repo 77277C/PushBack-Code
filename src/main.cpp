@@ -2,8 +2,8 @@
 #include "autons.hpp"
 
 
-pros::MotorGroup leftMotors({-3, -4, -6}, pros::MotorCartridge::blue);
-pros::MotorGroup rightMotors({7, 8, 9}, pros::MotorCartridge::blue);
+pros::MotorGroup leftMotors({-7, -5, -4}, pros::MotorCartridge::blue);
+pros::MotorGroup rightMotors({8, 9, 10}, pros::MotorCartridge::blue);
 lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 11.5,
     lemlib::Omniwheel::NEW_325, 450, 8);
 
@@ -106,9 +106,8 @@ void initialize() {
     pros::Task{[&]() {
         while (true) {     
             lemlib::Pose pose = chassis.getPose(false, false);
-
-            static pros::Motor lowerIntakeMotor(1, pros::MotorGears::rpm_600);
-            controller.print(0, 0, "X: %.1f Y: %.1f θ: %.1f", pose.x, pose.y, pose.theta);
+            controller.print(0, 0, "%s X: %.1f Y: %.1f θ: %.1f",
+            subsystems::intake::getAllianceColorAsString().c_str(), pose.x, pose.y, pose.theta);
             
             for (double temp : leftMotors.get_temperature_all()) {
                 console.printf("%.0f ", temp);
@@ -161,6 +160,14 @@ void opcontrol() {
         }
         subsystems::intake::iterate(goal);
 
+        // intake colorsort
+        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
+            subsystems::intake::toggleAllianceColor();
+        }
+        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+            subsystems::intake::disableColorSort();
+        }
+
 
         // pneumatics
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)) {
@@ -197,9 +204,6 @@ void opcontrol() {
             // fourteen_awp();
             subsystems::intake::stop();
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
-        }
-        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
-            subsystems::localization::leftDistanceReset(chassis, subsystems::localization::Wall::BOTTOM_Y);
         }
 
         pros::delay(10);
