@@ -112,6 +112,35 @@ void subsystems::intake::stop() {
     iterate(GoalType::NONE);
 }
 
+std::string subsystems::intake::getAllianceColorAsString() {
+    if (currentAllianceColor == AllianceColor::RED) {
+        return "R";
+    }
+    if (currentAllianceColor == AllianceColor::BLUE) {
+        return "B";
+    }
+    if (currentAllianceColor == AllianceColor::DISABLED) {
+        return "D";
+    }
+}
+
+void subsystems::intake::setAllianceColor(AllianceColor color) {
+    currentAllianceColor = color;
+}
+
+void subsystems::intake::toggleAllianceColor() {
+    if (currentAllianceColor == AllianceColor::RED || currentAllianceColor == AllianceColor::DISABLED) {
+        setAllianceColor(AllianceColor::BLUE);
+    } else {
+        setAllianceColor(AllianceColor::RED);
+    }
+}
+
+void subsystems::intake::disableColorSort() {
+    setAllianceColor(AllianceColor::DISABLED);
+}
+
+
 void subsystems::matchload::extend() {
     matchloadPiston.extend();
 }
