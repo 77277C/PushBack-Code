@@ -4,12 +4,12 @@
 
 pros::MotorGroup leftMotors({-7, -5, -4}, pros::MotorCartridge::blue);
 pros::MotorGroup rightMotors({8, 9, 10}, pros::MotorCartridge::blue);
-lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 11.5,
-    lemlib::Omniwheel::NEW_325, 450, 8);
+lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 12.5,
+    lemlib::Omniwheel::NEW_325, 450, 2);
 
-pros::Imu imu(19);
+pros::Imu imu(15);
 
-pros::Rotation horizontalTrackingWheelRotation(-20);
+pros::Rotation horizontalTrackingWheelRotation(-17);
 lemlib::TrackingWheel verticalTrackingWheel(&horizontalTrackingWheelRotation, 2.0, 0);
 
 
@@ -106,7 +106,7 @@ void initialize() {
     pros::Task{[&]() {
         while (true) {     
             lemlib::Pose pose = chassis.getPose(false, false);
-            controller.print(0, 0, "%s X: %.1f Y: %.1f θ: %.1f",
+            controller.print(0, 0, "%s %.1f %.1f %.1f",
             subsystems::intake::getAllianceColorAsString().c_str(), pose.x, pose.y, pose.theta);
             
             for (double temp : leftMotors.get_temperature_all()) {

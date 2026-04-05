@@ -42,7 +42,7 @@ void subsystems::intake::iterate(GoalType goalType) {
         changedModeAt = pros::millis();
     }
     previousMode = goalType;
-
+    /*
     if (pros::millis() - startJam > 100) {
         antiJam = false;
     }
@@ -51,7 +51,7 @@ void subsystems::intake::iterate(GoalType goalType) {
         scoringIntakeMotor.move(-127);
         return;
     }
-
+    */
     switch (goalType) {
         case GoalType::NONE:
             holdBallsPiston.retract();
@@ -95,11 +95,6 @@ void subsystems::intake::iterate(GoalType goalType) {
                 scoringIntakeMotor.move(127);
             }
             break;
-    }
-
-    if (pros::millis() - changedModeAt > 500 && (lowerIntakeMotor.get_efficiency_all()[0] < 0.1 || lowerIntakeMotor.get_efficiency_all()[1] < 0.1) ) {
-        antiJam = true;
-        startJam = pros::millis();
     }
 }
 
