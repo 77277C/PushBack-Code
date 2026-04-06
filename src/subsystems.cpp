@@ -56,7 +56,7 @@ void subsystems::intake::iterate(GoalType goalType) {
             return;
         case GoalType::MEDIUM_GOAL:
             holdBallsPiston.retract();
-            if (pros::millis() - midGoalStart < 100) {
+            if (pros::millis() - midGoalStart < 300) {
                 lowerIntakeMotor.move(-127);
             } else {
                 lowerIntakeMotor.move(127);
@@ -69,6 +69,7 @@ void subsystems::intake::iterate(GoalType goalType) {
             scoringIntakeMotor.move(127); //-60 to -20
             break;
         case GoalType::LONG_GOAL:
+            holdBallsPiston.extend();
             lowerIntakeMotor.move(127);
             double hue = intakeOpticalSensor.get_hue();
             if (
