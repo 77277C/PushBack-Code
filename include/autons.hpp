@@ -28,3 +28,5 @@ void skills98Start();
 void skills100End();
 void awp_part_two();
 void itCouldWork();
+void right_9_first_part();
+void right_9_w_wing();
