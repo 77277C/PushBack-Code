@@ -59,22 +59,19 @@ localization::UpgradedChassis<PARTICLES> chassis(drivetrain, linearSettings, ang
 rd::Selector selector({
     {"13 AWP", thirteen_awp},
     {"14 AWP", fourteen_awp},
-    {"Skills 96", skills_96},
+    {"Right 9 w/ wing", right_9_w_wing},
+    {"Right 9 w/o wing", right_9_no_wing},
+    {"Left 4+3 w/ wing", left_43_w_wing},
+    {"Left 4+3 w/o wing", left_43_no_wing},
+    {"Left 7", seven_ball_left},
+    {"Right 7", seven_ball_right},
     {"Left ML Rush (awp align)", left_ml_rush},
-    {"RIght ML Rush (awp align)", right_ml_rush},
-
-    {"left 9 w/wing", left_9_wing},
-    {"left 9 w/o wing", left_9_no_wing},
-    //{"left 9 hold", left_9_hold},
-    // {"Left", left},
-    //{"Left Mid Rush", left_mid_rush},
-    {"Left 7 w/ wing", left_7_w_wing},
-    {"Left 7 w/o wing", left_7_no_wing},
+    {"Right ML Rush (awp align)", right_ml_rush},
 
     //{"RightElim", rightElim},
     //{"Tune", tunePid},
     {"Wing balls", wing_balls},
-
+    {"Skills 96", skills_96},
     {"Skills 98", skills_98},
     {"Skills 98 Start", skills98Start},
     {"Skills 100 End", skills100End},
@@ -189,9 +186,9 @@ void opcontrol() {
         // autos
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-            //autonomous();
+            autonomous();
             //right_9_first_part();
-            right_9_w_wing();
+            //right_9_w_wing();
             //thirteen_awp();
             // awp_part_two();
             // skills_1();

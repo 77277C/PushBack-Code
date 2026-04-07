@@ -6,10 +6,12 @@ void fourteen_awp();
 
 // void left();
 void left_ml_rush();
-void left_7_w_wing();
-void left_7_no_wing();
-void left_9_wing();
-void left_9_no_wing();
+void seven_ball_left();
+void seven_ball_right();
+void left_43_w_wing();
+void left_43_no_wing();
+void right_9_w_wing();
+void right_9_no_wing();
 
 void right_ml_rush();
 
