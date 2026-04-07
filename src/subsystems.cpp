@@ -3,7 +3,7 @@
 
 pros::MotorGroup lowerIntakeMotor({-19, 20});
 pros::Motor scoringIntakeMotor(-16, pros::MotorGears::rpm_200);
-pros::Optical intakeOpticalSensor(17);
+pros::Optical intakeOpticalSensor(14);
 
 pros::adi::Pneumatics matchloadPiston('H',false);
 pros::adi::Pneumatics holdBallsPiston('F', false);
@@ -81,7 +81,7 @@ void subsystems::intake::iterate(GoalType goalType) {
                 startedSorting = pros::millis();
             }
 
-            if (pros::millis() - startedSorting > 20) {
+            if (pros::millis() - startedSorting > 0) {
                 isSorting = false;
             }
 
