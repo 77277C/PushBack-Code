@@ -56,7 +56,7 @@ void subsystems::intake::iterate(GoalType goalType) {
             return;
         case GoalType::MEDIUM_GOAL:
             holdBallsPiston.retract();
-            if (pros::millis() - midGoalStart < 200) {
+            if (pros::millis() - midGoalStart < 100) {
                 lowerIntakeMotor.move(-127);
             } else {
                 lowerIntakeMotor.move(127);
@@ -68,6 +68,11 @@ void subsystems::intake::iterate(GoalType goalType) {
             lowerIntakeMotor.move(127);
             scoringIntakeMotor.move(127); //-60 to -20
             break;
+        case GoalType::LONG_GOAL_END:
+            holdBallsPiston.extend();
+            lowerIntakeMotor.brake();
+            scoringIntakeMotor.move(127);
+        break;
         case GoalType::LONG_GOAL:
             holdBallsPiston.extend();
             lowerIntakeMotor.move(127);

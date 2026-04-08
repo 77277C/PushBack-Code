@@ -5,7 +5,7 @@
 pros::MotorGroup leftMotors({-7, -5, -4}, pros::MotorCartridge::blue);
 pros::MotorGroup rightMotors({8, 9, 10}, pros::MotorCartridge::blue);
 lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 12.5,
-    lemlib::Omniwheel::NEW_325, 450, 2);
+    lemlib::Omniwheel::NEW_325, 450, 4);
 
 pros::Imu imu(15);
 
@@ -189,6 +189,7 @@ void opcontrol() {
             autonomous();
             //right_9_first_part();
             //right_9_w_wing();
+            //left_43_w_wing();
             //thirteen_awp();
             // awp_part_two();
             // skills_1();

@@ -23,6 +23,7 @@ namespace intake {
         MEDIUM_GOAL_SLOWISH,
         MEDIUM_GOAL_SLOW,
         HOLD_BALLS,
+        LONG_GOAL_END,
         LONG_GOAL,
         NONE
     };
