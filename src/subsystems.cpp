@@ -45,7 +45,6 @@ void subsystems::intake::iterate(GoalType goalType) {
 
     switch (goalType) {
         case GoalType::NONE:
-            holdBallsPiston.retract();
             lowerIntakeMotor.brake();
             scoringIntakeMotor.brake();
             return;
