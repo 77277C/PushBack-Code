@@ -541,7 +541,7 @@ void right_9_first_part(){
     chassis.waitUntilDone();
 
     chassis.tank(-127, -127);
-    pros::delay(650);
+    pros::delay(800);
 
     // Y changed from 48 to -48
     chassis.setPose(-25, -48, chassis.getPose().theta);
@@ -980,9 +980,9 @@ void wing_balls() {
     chassis.moveToPoint(-27, -47.5, 1300, {.maxSpeed = 85, .minSpeed = 70, .earlyExitRange = 1}); //-35.75 to -37.5
     subsystems::wing::retract();
 
-    chassis.turnToPoint(-16, -42, 3500, {.forwards = false, .maxSpeed = 75, .minSpeed = 60, .earlyExitRange = 2}); //-34.75 to -34.55
+    chassis.turnToPoint(-16, -41, 3500, {.forwards = false, .maxSpeed = 75, .minSpeed = 60, .earlyExitRange = 2}); //-34.75 to -34.55
 
-    chassis.moveToPoint(-16, -41.5, 3500, {.forwards = false, .maxSpeed = 75, .minSpeed = 60, .earlyExitRange = 2}); //-34.75 to -34.55
+    chassis.moveToPoint(-16, -40.5, 3500, {.forwards = false, .maxSpeed = 75, .minSpeed = 60, .earlyExitRange = 2}); //-34.75 to -34.55
 
     chassis.moveToPoint(3, -40, 7000, {.forwards = false, .maxSpeed = 48, .minSpeed = 45});
 
