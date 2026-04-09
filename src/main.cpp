@@ -5,7 +5,7 @@
 pros::MotorGroup leftMotors({-7, -5, -4}, pros::MotorCartridge::blue);
 pros::MotorGroup rightMotors({8, 9, 10}, pros::MotorCartridge::blue);
 lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 12.5,
-    lemlib::Omniwheel::NEW_325, 450, 4);
+    lemlib::Omniwheel::NEW_325, 450, 8);
 
 pros::Imu imu(12);
 
