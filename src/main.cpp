@@ -7,7 +7,7 @@ pros::MotorGroup rightMotors({8, 9, 10}, pros::MotorCartridge::blue);
 lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 12.5,
     lemlib::Omniwheel::NEW_325, 450, 4);
 
-pros::Imu imu(15);
+pros::Imu imu(12);
 
 pros::Rotation horizontalTrackingWheelRotation(-17);
 lemlib::TrackingWheel verticalTrackingWheel(&horizontalTrackingWheelRotation, 2.0, 0);
@@ -38,9 +38,9 @@ lemlib::ControllerSettings angularSettings(1.65, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               10, // derivative gain (kD)
                                               3, // anti windup
-                                              1, // small error range, in degrees
+                                              2, // small error range, in degrees
                                               100, // small error range timeout, in milliseconds
-                                              3, // large error range, in degrees
+                                              5, // large error range, in degrees
                                               500, // large error range timeout, in milliseconds
                                               0 // maximum acceleration (slew)
 );
@@ -190,8 +190,10 @@ void opcontrol() {
             //right_9_first_part();
             //right_9_w_wing();
             //left_43_w_wing();
+            //left_ml_rush();
+            //seven_ball_left();
             //thirteen_awp();
-            // awp_part_two();
+            //awp_part_two();
             // skills_1();
             //left_9_wing();
             //left_9_hold();
