@@ -12,13 +12,13 @@ void awp_part_two(){
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
 
     chassis.moveToPoint(-21, -24, 2000, {.maxSpeed = 100, .minSpeed = 10, .earlyExitRange = 0.25});
-    chassis.waitUntil(7);
+    chassis.waitUntil(8);
     subsystems::matchload::extend();
     chassis.waitUntilDone();
     subsystems::matchload::retract();
 
     chassis.moveToPoint(-22, 19, 4000, {.maxSpeed = 100, .minSpeed = 10, .earlyExitRange = 0.25});
-    chassis.waitUntil(21);
+    chassis.waitUntil(22);
     subsystems::matchload::extend();
     chassis.waitUntilDone();
 
