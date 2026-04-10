@@ -618,7 +618,7 @@ void left_43_first_part() {
     chassis.turnToHeading(270, 1000, {.minSpeed = 20, .earlyExitRange = 2});
     chassis.waitUntilDone();
     // Y changed from 48 to -48
-    chassis.moveToPoint(-16, 43, 2000, {.forwards = false, .maxSpeed = 70});
+    chassis.moveToPoint(-16, 43.25, 2000, {.forwards = false, .maxSpeed = 70});
 
 
     chassis.waitUntilDone();
