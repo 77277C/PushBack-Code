@@ -38,7 +38,7 @@ void subsystems::intake::iterate(GoalType goalType) {
     static GoalType previousMode = GoalType::NONE;
     static std::uint32_t midGoalStart = 0;
 
-    if (previousMode != GoalType::MEDIUM_GOAL && goalType == GoalType::MEDIUM_GOAL) {
+    if ((previousMode != GoalType::MEDIUM_GOAL && goalType == GoalType::MEDIUM_GOAL) || (previousMode != GoalType::MEDIUM_GOAL_SLOW && goalType == GoalType::MEDIUM_GOAL_SLOW)) {
         midGoalStart = pros::millis();
     }
     previousMode = goalType;
@@ -53,6 +53,15 @@ void subsystems::intake::iterate(GoalType goalType) {
             lowerIntakeMotor.move(-127);
             scoringIntakeMotor.move(-127);
             return;
+        case GoalType::MEDIUM_GOAL_SLOW:
+            holdBallsPiston.retract();
+            if (pros::millis() - midGoalStart < 100) {
+                lowerIntakeMotor.move(-127);
+            } else {
+                lowerIntakeMotor.move(127);
+            }
+            scoringIntakeMotor.move(-90);
+            break;
         case GoalType::MEDIUM_GOAL:
             holdBallsPiston.retract();
             if (pros::millis() - midGoalStart < 100) {
