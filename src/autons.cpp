@@ -369,10 +369,9 @@ void seven_ball_left(){
     chassis.waitUntil(12);
     subsystems::matchload::extend();
     chassis.waitUntilDone();
-    chassis.moveToPoint(-37, 46, 2000, {.maxSpeed = 110});
+    chassis.moveToPoint(-37, 46, 2000, {.maxSpeed = 110, .minSpeed = 30, .earlyExitRange = 3});
     chassis.waitUntilDone();
-    chassis.turnToHeading(270, 1700, {.minSpeed = 20, .earlyExitRange = 2});
-    chassis.waitUntilDone();
+
 
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
     chassis.moveToPoint(-73.5, 45.25, 1200, {.maxSpeed = 40, .earlyExitRange = 1});
