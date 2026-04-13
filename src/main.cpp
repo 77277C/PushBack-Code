@@ -71,6 +71,7 @@ rd::Selector selector({
     //{"RightElim", rightElim},
     //{"Tune", tunePid},
     {"Wing balls", wing_balls},
+    {"Drive Forward", driveForward},
     {"Skills 96", skills_96},
     {"Skills 98", skills_98},
     {"Skills 98 Start", skills98Start},
