@@ -370,11 +370,11 @@ void seven_ball_left(){
     subsystems::matchload::extend();
     chassis.waitUntilDone();
     chassis.moveToPoint(-37, 46, 2000, {.maxSpeed = 110, .minSpeed = 30, .earlyExitRange = 3});
-    chassis.waitUntilDone();
+    chassis.waitUntil(25);
 
 
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
-    chassis.moveToPoint(-73.5, 45.25, 1200, {.maxSpeed = 40, .earlyExitRange = 1});
+    chassis.moveToPoint(-73.5, 45.25, 1700, {.maxSpeed = 40, .earlyExitRange = 1});
     chassis.waitUntilDone();
 
 
@@ -404,7 +404,7 @@ void seven_ball_right(){
     subsystems::matchload::extend();
     chassis.waitUntilDone();
     chassis.moveToPoint(-37, -46, 2000, {.maxSpeed = 110, .minSpeed = 30, .earlyExitRange = 3});
-    chassis.waitUntilDone();
+    chassis.waitUntil(25);
 
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
     chassis.moveToPoint(-73.5, -45.25, 1700, {.maxSpeed = 40, .earlyExitRange = 1});
@@ -600,12 +600,10 @@ void right_9_w_wing(){
     pros::delay(100000);
 }
 
-
 void right_9_no_wing() {
     right_9_first_part();
     pros::delay(5000);
 }
-
 
 void left_43_first_part() {
     chassis.setPose(-42, 12.25 ,90 );
@@ -1734,6 +1732,7 @@ void skills100End(){
     skillsFive();
 
 }
+
 void tunePid(){
     chassis.setPose(0, 0, 0);
     chassis.turnToHeading(90, 10000);
@@ -1809,7 +1808,6 @@ void left_9_first_part() {
     chassis.waitUntilDone();
 }
 
-// wing barely too slow?
 void left_9_wing() {
     // 9 balls, preload + 3 mid + 2 under long, score in long goal, 3 matchloader, score mid, descore mid, long goal wing
     // Tested: works
@@ -1841,7 +1839,6 @@ void left_9_no_wing() {
     pros::delay(400);
     pros::delay(1000);
 }
-
 
 void endMid(){
     subsystems::wing::extend();
@@ -1890,10 +1887,8 @@ void endMid(){
     pros::delay(8000);
 }
 
-
 void driveForward() {
     chassis.tank(20, 20);
     pros::delay(750);
     chassis.tank(0, 0);
 }
-
