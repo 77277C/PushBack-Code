@@ -481,9 +481,7 @@ void right_9_first_part(){
     chassis.waitUntilDone();
 
     chassis.tank(-127, -127);
-    pros::delay(600);
-    subsystems::intake::run(subsystems::intake::GoalType::LONG_GOAL_END);
-    pros::delay(100);
+    pros::delay(800);
 
     // Y changed from 48 to -48
     chassis.setPose(-25, -48, chassis.getPose().theta);
@@ -511,7 +509,7 @@ void right_9_first_part(){
     subsystems::matchload::retract();
 
     chassis.waitUntilDone();
-    subsystems::intake::run(subsystems::intake::GoalType::LOW_GOAL);
+    subsystems::intake::run(subsystems::intake::GoalType::LOW_GOAL_SLOW);
     pros::delay(1300);
 }
 

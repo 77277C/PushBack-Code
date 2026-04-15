@@ -77,12 +77,12 @@ rd::Selector selector({
     {"Skills 98 Start", skills98Start},
     {"Skills 100 End", skills100End},
 
-    
+
     //"Skills 98", skills_98},
-    {"SkillsOne", skillsOne}, 
-    //{"SkillsTwo", skillsTwo}, 
-    {"SkillsThree", skillsThree}, 
-    {"SkillsFour", skillsFour}, 
+    {"SkillsOne", skillsOne},
+    //{"SkillsTwo", skillsTwo},
+    {"SkillsThree", skillsThree},
+    {"SkillsFour", skillsFour},
     {"SkillsFive", skillsFive}
 });
 
@@ -99,14 +99,14 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 void initialize() {
     printf("Starting logging");
     chassis.calibrate();
-    
-    
+
+
     pros::Task{[&]() {
-        while (true) {     
+        while (true) {
             lemlib::Pose pose = chassis.getPose(false, false);
             controller.print(0, 0, "%s %.1f %.1f %.1f",
             subsystems::intake::getAllianceColorAsString().c_str(), pose.x, pose.y, pose.theta);
-            
+
             for (double temp : leftMotors.get_temperature_all()) {
                 console.printf("%.0f ", temp);
             }
@@ -123,7 +123,7 @@ void initialize() {
             pros::delay(100);
         }
     }};
-    
+
 }
 
 
@@ -134,6 +134,7 @@ void initialize() {
  * and applies movement commands to the robot's motors.
  */
 void opcontrol() {
+    subsystems::intake::disableColorSort();
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
     subsystems::intake::stop();
     while (true) {
@@ -170,20 +171,20 @@ void opcontrol() {
         // pneumatics
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)) {
             subsystems::matchload::toggle();
-            if (subsystems::matchload::is_extended()) {
-                subsystems::midGoalDescore::retract();
-            }
         }
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
             subsystems::wing::toggle();
         }
-        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-            subsystems::midGoalDescore::toggle();
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+            subsystems::midGoalDescore::extend();
             if (subsystems::midGoalDescore::is_extended()) {
                 subsystems::matchload::retract();
             }
         }
-        
+        else {
+            subsystems::midGoalDescore::retract();
+        }
+
         // autos
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
