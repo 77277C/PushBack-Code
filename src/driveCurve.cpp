@@ -10,7 +10,7 @@ constexpr int32_t FIRST_INPUT_LIMIT = 114;
 constexpr int32_t SECOND_INPUT_LIMIT = 114;
 
 
-std::pair<int32_t, int32_t> driveCurve(const std::pair<int32_t, int32_t>& input) {
+std::pair<int32_t, int32_t> driveCurveTony(const std::pair<int32_t, int32_t>& input) {
     int32_t first = input.first;
     int32_t second = input.second;
 
@@ -33,14 +33,14 @@ std::pair<int32_t, int32_t> driveCurve(const std::pair<int32_t, int32_t>& input)
 constexpr int32_t T = 1;
 constexpr float DRIVE_CURVE_SCALE = 0.85;
 
-std::pair<int32_t, int32_t> driveCurvePilon(const std::pair<int32_t, int32_t>& input) {
+std::pair<int32_t, int32_t> driveCurveGeorge(const std::pair<int32_t, int32_t>& input) {
     int32_t first = input.first;
     float second = input.second;
 
     second = (
-            std::pow(M_E, -(T/10)) +
-            std::pow(M_E, (std::abs(second) - 127) / 10) *
-            (1 - std::pow(M_E, -(T/10)))
+            std::exp(-(T/10)) +
+            std::exp((std::abs(second) - 127) / 10) *
+            (1 - std::exp(-(T/10)))
         ) * second * DRIVE_CURVE_SCALE;
 
     return {first, second};

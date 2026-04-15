@@ -25,4 +25,4 @@ std::pair<int32_t, int32_t> driveCurveTony(const std::pair<int32_t, int32_t>& in
  * @param input A pair of values: first = lateral input, second = angular input.
  * @return A transformed pair of values for smoother control.
  */
-std::pair<int32_t, int32_t> driveCurvePilon(const std::pair<int32_t, int32_t>& input);
+std::pair<int32_t, int32_t> driveCurveGeorge(const std::pair<int32_t, int32_t>& input);
