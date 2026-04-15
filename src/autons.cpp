@@ -79,7 +79,7 @@ void fourteen_awp(){
 
     subsystems::matchload::extend();
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
-    chassis.turnToPoint(-62, -45.5, 2500, {.maxSpeed = 85, .minSpeed = 5,.earlyExitRange = 2});
+    chassis.turnToPoint(-62, -45.5, 2500, {.maxSpeed = 85, .minSpeed = 20,.earlyExitRange = 2});
 
 
     // shake in the matchloaer
