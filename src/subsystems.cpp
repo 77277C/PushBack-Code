@@ -60,7 +60,7 @@ void subsystems::intake::iterate(GoalType goalType) {
             return;
         case GoalType::MEDIUM_GOAL_SLOW:
             holdBallsPiston.retract();
-            if (pros::millis() - midGoalStart < 100) {
+            if (pros::millis() - midGoalStart < 130) {
                 lowerIntakeMotor.move(-127);
             } else {
                 lowerIntakeMotor.move(127);
