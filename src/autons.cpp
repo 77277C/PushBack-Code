@@ -309,13 +309,13 @@ void seven_ball_left() {
     //chassis.moveToPoint(-37, 46, 2000, {.maxSpeed = 110, .minSpeed = 40});
     //chassis.waitUntil(8);
     //chassis.cancelMotion();
-    chassis.moveToPose(-59, 45, 270, 1500, {.lead = 0.4, .minSpeed = 40, .earlyExitRange = 2});
+    chassis.moveToPose(-56, 44, -90, 1500, {.lead = 0.55, .minSpeed = 40, .earlyExitRange = 3});
     chassis.waitUntilDone();
 
-    chassis.turnToPoint(-72.5, 45.25, 800, {.maxSpeed = 100,.minSpeed = 50,  .earlyExitRange = 4});
+    chassis.turnToPoint(-72.5, 45, 800, {.maxSpeed = 100,.minSpeed = 50,  .earlyExitRange = 4});
 
 
-    chassis.moveToPoint(-72.5, 45.25, 500, {.maxSpeed = 55, .earlyExitRange = 1});
+    chassis.moveToPoint(-72.5, 45, 550, {.maxSpeed = 55, .earlyExitRange = 1});
     chassis.waitUntilDone();
 
 
@@ -333,7 +333,7 @@ void seven_ball_left() {
 
 
     chassis.tank(-127, -127);
-    pros::delay(850); //1300 to 1100
+    pros::delay(1250); //1300 to 1100
     wing_balls();
     pros::delay(5000);
 }
@@ -350,13 +350,13 @@ void seven_ball_right(){
     //chassis.moveToPoint(-37, 46, 2000, {.maxSpeed = 110, .minSpeed = 40});
     //chassis.waitUntil(8);
     //chassis.cancelMotion();
-    chassis.moveToPose(-59, -45, 270, 1500, {.lead = 0.4, .minSpeed = 40, .earlyExitRange = 2});
+    chassis.moveToPose(-56, -44, -90, 1500, {.lead = 0.57, .minSpeed = 40, .earlyExitRange = 2});
     chassis.waitUntilDone();
 
-    chassis.turnToPoint(-72.5, -45.25, 800, {.maxSpeed = 100,.minSpeed = 50,  .earlyExitRange = 4});
+    chassis.turnToPoint(-73.5, -45.25, 800, {.maxSpeed = 100,.minSpeed = 50,  .earlyExitRange = 4});
 
 
-    chassis.moveToPoint(-72.5, -45.25, 500, {.maxSpeed = 55, .earlyExitRange = 1});
+    chassis.moveToPoint(-73.5, -45.25, 500, {.maxSpeed = 55, .earlyExitRange = 1});
     chassis.waitUntilDone();
 
 
@@ -374,7 +374,7 @@ void seven_ball_right(){
 
 
     chassis.tank(-127, -127);
-    pros::delay(850); //1300 to 1100
+    pros::delay(1200); //1300 to 1100
     wing_balls();
     pros::delay(5000);
 }
@@ -926,17 +926,33 @@ void skills_96(){
 }
 
 void wing_balls() {
-    chassis.setPose(-15, -47.5, chassis.getPose().theta); //-47 to -47.5
+    chassis.setPose(-15, -47.5, 270); //-47 to -47.5
+    /*
     pros::delay(100);
 
-    chassis.moveToPoint(-27, -47.5, 1300, {.maxSpeed = 85, .minSpeed = 70, .earlyExitRange = 1}); //-35.75 to -37.5
+    chassis.moveToPoint(-23, -47.5, 1300, {.maxSpeed = 110, .minSpeed = 70, .earlyExitRange = 1}); //-35.75 to -37.5
     subsystems::wing::retract();
 
-    chassis.turnToPoint(-16, -41, 3500, {.forwards = false, .maxSpeed = 75, .minSpeed = 60, .earlyExitRange = 2}); //-34.75 to -34.55
+    chassis.turnToPoint(-16, -41, 3500, {.forwards = false, .maxSpeed = 95, .minSpeed = 60, .earlyExitRange = 2}); //-34.75 to -34.55
 
-    chassis.moveToPoint(-16, -41, 3500, {.forwards = false, .maxSpeed = 75, .minSpeed = 60, .earlyExitRange = 2}); //-34.75 to -34.55
+    chassis.moveToPoint(-16, -41, 3500, {.forwards = false, .maxSpeed = 95, .minSpeed = 60, .earlyExitRange = 2}); //-34.75 to -34.55
 
-    chassis.moveToPoint(3, -40.5, 7000, {.forwards = false, .maxSpeed = 48, .minSpeed = 45});
+    */
+
+    chassis.moveToPoint(-17, -47.5, 1300, {.maxSpeed = 110, .minSpeed = 100, .earlyExitRange = 1}); //-35.75 to -37.5
+
+    chassis.moveToPoint(-24, -37.5, 1300, {.maxSpeed = 110, .minSpeed = 70, .earlyExitRange = 2}); //-35.75 to -37.5
+
+    chassis.turnToPoint(-16, -39.5, 3500, {.forwards = false, .maxSpeed = 110, .minSpeed = 100, .earlyExitRange = 7}); //-34.75 to -34.55
+
+    chassis.moveToPoint(-16, -39.5, 3500, {.forwards = false, .maxSpeed = 110, .minSpeed = 100, .earlyExitRange = 3}); //-34.75 to -34.55
+
+    chassis.moveToPoint(3, -40.75, 7000, {.forwards = false, .maxSpeed = 75, .minSpeed = 60});
+
+    chassis.waitUntil(5);
+    chassis.cancelMotion();
+
+    chassis.moveToPoint(3, -40.75, 7000, {.forwards = false, .maxSpeed = 48, .minSpeed = 45});
 
     chassis.swingToHeading(270, lemlib::DriveSide::RIGHT, 1000);
     chassis.waitUntilDone();
