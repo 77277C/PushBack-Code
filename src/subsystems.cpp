@@ -9,6 +9,7 @@ pros::adi::Pneumatics matchloadPiston('H',false);
 pros::adi::Pneumatics holdBallsPiston('F', false);
 pros::adi::Pneumatics wingPiston('G', false);
 pros::adi::Pneumatics midGoalDescorePiston('E', false);
+pros::adi::Pneumatics pistake('A', true, true);
 
 std::shared_ptr<pros::Task> intakingTaskPtr = nullptr;
 subsystems::intake::AllianceColor currentAllianceColor = subsystems::intake::AllianceColor::DISABLED;
@@ -45,20 +46,30 @@ void subsystems::intake::iterate(GoalType goalType) {
 
     switch (goalType) {
         case GoalType::NONE:
+            pistake.extend();
             lowerIntakeMotor.brake();
             scoringIntakeMotor.brake();
             return;
         case GoalType::LOW_GOAL:
+            pistake.retract();
+            holdBallsPiston.retract();
+            lowerIntakeMotor.move(-127);
+            scoringIntakeMotor.move(-127);
+            return;
+        case GoalType::LOW_GOAL_DOWN:
+            pistake.extend();
             holdBallsPiston.retract();
             lowerIntakeMotor.move(-127);
             scoringIntakeMotor.move(-127);
             return;
         case GoalType::LOW_GOAL_SLOW:
+            pistake.extend();
             holdBallsPiston.retract();
             lowerIntakeMotor.move(-100);
             scoringIntakeMotor.move(-127);
             return;
         case GoalType::MEDIUM_GOAL_SLOW:
+            pistake.extend();
             holdBallsPiston.retract();
             if (pros::millis() - midGoalStart < 115) {
                 lowerIntakeMotor.move(-127);
@@ -68,6 +79,7 @@ void subsystems::intake::iterate(GoalType goalType) {
             scoringIntakeMotor.move(-70);
             break;
         case GoalType::MEDIUM_GOAL:
+            pistake.extend();
             holdBallsPiston.retract();
             if (pros::millis() - midGoalStart < 115) {
                 lowerIntakeMotor.move(-127);
@@ -77,16 +89,19 @@ void subsystems::intake::iterate(GoalType goalType) {
             scoringIntakeMotor.move(-127);
             break;
         case GoalType::HOLD_BALLS:
+            pistake.extend();
             holdBallsPiston.retract();
             lowerIntakeMotor.move(127);
             scoringIntakeMotor.move(127); //-60 to -20
             break;
         case GoalType::LONG_GOAL_END:
+            pistake.extend();
             holdBallsPiston.extend();
             lowerIntakeMotor.brake();
             scoringIntakeMotor.move(127);
         break;
         case GoalType::LONG_GOAL:
+            pistake.extend();
             holdBallsPiston.extend();
             lowerIntakeMotor.move(127);
             double hue = intakeOpticalSensor.get_hue();

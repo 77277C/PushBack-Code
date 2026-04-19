@@ -154,6 +154,9 @@ void opcontrol() {
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
             goal = subsystems::intake::GoalType::HOLD_BALLS;
         }
+        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
+            goal = subsystems::intake::GoalType::LOW_GOAL_DOWN;
+        }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
             goal = subsystems::intake::GoalType::LOW_GOAL;
         }

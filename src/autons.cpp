@@ -526,10 +526,10 @@ void right_9_first_part(){
 
     chassis.moveToPoint(-9, -11.25, 1000, {.maxSpeed = 60, .earlyExitRange = 5.5});
     chassis.waitUntil(15);
-    subsystems::intake::run(subsystems::intake::GoalType::LOW_GOAL_SLOW);
+    subsystems::intake::run(subsystems::intake::GoalType::LOW_GOAL);
 
     chassis.waitUntilDone();
-    subsystems::intake::run(subsystems::intake::GoalType::LOW_GOAL_SLOW);
+    subsystems::intake::run(subsystems::intake::GoalType::LOW_GOAL);
     pros::delay(1300);
 }
 
