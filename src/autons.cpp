@@ -338,8 +338,6 @@ void seven_ball_left() {
     pros::delay(5000);
 }
 
-
-
 void seven_ball_right(){
     chassis.setPose(-42, -12.25 ,90 );
     subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
@@ -1933,4 +1931,190 @@ void driveForward() {
     chassis.tank(20, 20);
     pros::delay(750);
     chassis.tank(0, 0);
+}
+
+void skills_119() {
+
+    //move forward into the parking barrier
+    chassis.setPose(-65, -16, 0);
+    subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
+    chassis.moveToPoint(-65, -24, 1000, {.forwards = false});
+
+    //intake all the six blue balls
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-65, 18, 3000, {.maxSpeed = 80, .minSpeed = 80});
+    chassis.waitUntilDone();
+
+    pros::delay(400);
+    subsystems::localization::leftDistanceReset(chassis, subsystems::localization::Wall::LEFT_X);
+    pros::delay(400);
+
+    chassis.turnToHeading(90,1000);
+    chassis.waitUntilDone();
+    pros::delay(50);
+    subsystems::localization::leftDistanceReset(chassis, subsystems::localization::Wall::TOP_Y);
+    pros::delay(100);
+
+    pros::delay(1000);
+
+    //go to four group in front of upper mid goal
+    chassis.moveToPose(-29, 29, 135, 3000);
+    chassis.waitUntilDone();
+    subsystems::matchload::extend();
+    chassis.moveToPose(-24, 24, 135, 3000);
+
+    //do a 180 and have the back of the robot face the mid goal
+    chassis.waitUntilDone();
+    chassis.turnToHeading(315, 1000);
+    chassis.moveToPose(-13, 13, 315, 1000, {.forwards = false});
+    chassis.waitUntilDone();
+
+    //score 7 balls into the upper mid goal
+    subsystems::intake::run(subsystems::intake::GoalType::LONG_GOAL);
+    pros::delay(100);
+    subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL);
+    pros::delay(1000);
+    subsystems::intake::run(subsystems::intake::GoalType::MEDIUM_GOAL_SLOW);
+    pros::delay(400);
+    subsystems::intake::run(subsystems::intake::GoalType::NONE);
+
+    chassis.moveToPose(-10, 10, 315, 1000, {.forwards = false});
+    chassis.waitUntilDone();
+ 
+    pros::delay(10000);
+
+    chassis.moveToPoint(-39, 46, 3000);
+    subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
+    chassis.waitUntilDone();
+
+    //intake balls from matchloader one
+    chassis.moveToPoint(-60.5, 46, 3000);
+    chassis.waitUntilDone();
+
+    pros::delay(400);
+    chassis.moveToPoint(-39, 46, 3000, {.forwards = false});
+    subsystems::matchload::retract();
+    chassis.waitUntilDone();
+    
+    chassis.moveToPoint(-27, 60, 3000);
+    chassis.waitUntilDone();
+
+    chassis.moveToPoint(50, 60, 5000);
+    chassis.waitUntilDone();
+
+    //score all balls into high goal (from otherside)
+    chassis.moveToPose(27, 48, 0, 2000, {.forwards = false});
+    chassis.waitUntilDone();
+    chassis.tank(-25, -25);
+    chassis.setPose(27, 48, 0);
+    subsystems::intake::run(subsystems::intake::GoalType::LONG_GOAL);
+    pros::delay(1000);
+    subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
+
+    //collect balls from matchlaoder 2
+    chassis.moveToPoint(60, 48, 5000);
+    pros::delay(400);
+
+    //score balls in high goal
+    chassis.moveToPose(27, 48, 0, 2000, {.forwards = false});
+    chassis.waitUntilDone();
+    chassis.tank(-25, -25);
+    chassis.setPose(27, 48, 0);
+    subsystems::intake::run(subsystems::intake::GoalType::LONG_GOAL);
+    pros::delay(1000);
+    subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
+
+    //go into park barrier and collect six red balls
+    chassis.moveToPoint(65, 24, 1000, {.forwards = false});
+
+    //intake all the six blue balls
+    chassis.waitUntilDone();
+    chassis.moveToPoint(65, -20, 3000, {.maxSpeed = 90, .minSpeed = 80});
+    chassis.waitUntilDone();
+
+    pros::delay(400);
+    subsystems::localization::leftDistanceReset(chassis, subsystems::localization::Wall::RIGHT_X);
+    pros::delay(400);
+
+    chassis.turnToHeading(90, 1000);
+    chassis.waitUntilDone();
+    pros::delay(50);
+    subsystems::localization::leftDistanceReset(chassis, subsystems::localization::Wall::BOTTOM_Y);
+    pros::delay(100);
+
+    //go to four ball cluster near lower mid goal, and collect one red ball
+    chassis.moveToPose(15, 15, 45, 2000);
+    chassis.waitUntilDone();
+    chassis.moveToPose(22, 22.5, 45, 2000);
+    chassis.waitUntilDone();
+
+    //score 7 red balls into lower goal
+    chassis.turnToHeading(225, 1000);
+    chassis.moveToPose(13, 13, 225, 1000);
+    chassis.waitUntilDone();
+    subsystems::intake::run(subsystems::intake::GoalType::LOW_GOAL);
+    pros::delay(700);
+    subsystems::intake::run(subsystems::intake::GoalType::LOW_GOAL_SLOW);
+    pros::delay(300);
+    subsystems::intake::run(subsystems::intake::GoalType::NONE);
+    chassis.moveToPose(11, 11, 225, 1000);
+    chassis.waitUntilDone();
+    chassis.moveToPose(14, 14, 225, 1000, {.forwards = false});
+
+    //collect rest of balls in cluster
+    // chassis.turnToHeading(45, 1000);
+    chassis.moveToPoint(25, 25, 1000);
+    chassis.waitUntilDone();
+    subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
+
+    chassis.moveToPoint(23, -23, 3000);
+    chassis.waitUntilDone();
+
+    chassis.moveToPoint(35, -39, 3000);
+    chassis.waitUntilDone();
+    subsystems::matchload::extend();
+
+    // go to next (three) matchloader and collect balls
+    chassis.moveToPose(62, -47, 0, 3000);
+    chassis.waitUntilDone();
+    pros::delay(400);
+
+    chassis.moveToPoint(39, -47, 3000, {.forwards = false});
+    chassis.waitUntilDone();
+    subsystems::matchload::retract();
+
+    chassis.moveToPoint(39, -60, 3000);
+    chassis.waitUntilDone();
+
+    chassis.moveToPoint(-39, -60, 3000);
+    chassis.waitUntilDone();
+
+    //go to otherside and score balls in high goal
+    chassis.moveToPose(-26, -47, 270, 3000, {.forwards = false});
+    chassis.waitUntilDone();
+    chassis.tank(-25, -25);
+    chassis.setPose(-26, -47, 0);
+    subsystems::intake::run(subsystems::intake::GoalType::LONG_GOAL);
+    subsystems::matchload::extend();
+    pros::delay(1000);
+    subsystems::intake::run(subsystems::intake::GoalType::HOLD_BALLS);
+
+    //collect and score balls in matchloader 4
+    chassis.moveToPoint(-63, -47, 3000);
+    chassis.waitUntilDone();
+    pros::delay(400);
+
+    chassis.moveToPose(-27, -47, 180, 2000, {.forwards = false});
+    chassis.waitUntilDone();
+    chassis.tank(-25, -25);
+    chassis.setPose(-26, -47, 0);
+    subsystems::intake::run(subsystems::intake::GoalType::LONG_GOAL);
+    subsystems::matchload::retract();
+    pros::delay(1000);
+    subsystems::intake::run(subsystems::intake::GoalType::NONE);
+
+    //park
+    chassis.moveToPoint(-65, -24, 1000);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-65, 0, 3000, {.maxSpeed = 90, .minSpeed = 80});
 }

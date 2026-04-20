@@ -49,14 +49,15 @@ Distance frontDistanceSensor(11, {0, 0, 0});
 Distance rightDistanceSensor(12, {0, 0, -M_PI_2});
 Distance leftDistanceSensor(13, {0, 0, M_PI_2});
 */
-std::vector<Distance*> pfSensors = {};
 
+std::vector<Distance*> pfSensors = {};
 
 localization::UpgradedChassis<PARTICLES> chassis(drivetrain, linearSettings, angularSettings,
     sensors, pfSensors);
 
 
 rd::Selector selector({
+    {"Skills 119", skills_119},
     {"13 AWP", thirteen_awp},
     {"14 AWP", fourteen_awp},
     {"Right 9 w/ wing", right_9_w_wing},
@@ -191,7 +192,8 @@ void opcontrol() {
         // autos
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-            autonomous();
+            // autonomous();
+            skills_119();
             //right_9_first_part();
             //right_9_w_wing();
             //left_43_w_wing();
