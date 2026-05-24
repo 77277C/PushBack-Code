@@ -1,6 +1,8 @@
 #include "subsystems.hpp"
 
 
+pros::Motor lowerIntakeMotor1(-19);
+pros::Motor lowerIntakeMotor2(20);
 pros::MotorGroup lowerIntakeMotor({-19, 20});
 pros::Motor scoringIntakeMotor(-16, pros::MotorGears::rpm_200);
 pros::Optical intakeOpticalSensor(14);
@@ -63,16 +65,29 @@ void subsystems::intake::iterate(GoalType goalType) {
             scoringIntakeMotor.move(-127);
             return;
         case GoalType::LOW_GOAL_SLOW:
+            pistake.retract();
+            holdBallsPiston.retract();
+            lowerIntakeMotor.move(-55);
+            scoringIntakeMotor.move(-127);
+            return;
+        case GoalType::LOW_GOAL_SKILLS:
+            pistake.retract();
+            holdBallsPiston.retract();
+            lowerIntakeMotor.move(-35);
+            scoringIntakeMotor.move(-127);
+            return;
+        case GoalType::MEDIUM_GOAL_QUEUE:
             pistake.extend();
             holdBallsPiston.retract();
-            lowerIntakeMotor.move(-100);
-            scoringIntakeMotor.move(-127);
+            scoringIntakeMotor.brake();
+            lowerIntakeMotor1.move(127);
+            lowerIntakeMotor2.brake();
             return;
         case GoalType::MEDIUM_GOAL_SLOW:
             pistake.extend();
             holdBallsPiston.retract();
-            if (pros::millis() - midGoalStart < 115) {
-                lowerIntakeMotor.move(-127);
+            if (pros::millis() - midGoalStart < 135) {
+                lowerIntakeMotor.move(-85);
             } else {
                 lowerIntakeMotor.move(127);
             }
@@ -81,7 +96,17 @@ void subsystems::intake::iterate(GoalType goalType) {
         case GoalType::MEDIUM_GOAL:
             pistake.extend();
             holdBallsPiston.retract();
-            if (pros::millis() - midGoalStart < 115) {
+            if (pros::millis() - midGoalStart < 135) {
+                lowerIntakeMotor.move(-85);
+            } else {
+                lowerIntakeMotor.move(127);
+            }
+            scoringIntakeMotor.move(-127);
+            break;
+        case GoalType::MEDIUM_GOAL_HARD:
+            pistake.extend();
+            holdBallsPiston.retract();
+            if (pros::millis() - midGoalStart < 185) {
                 lowerIntakeMotor.move(-127);
             } else {
                 lowerIntakeMotor.move(127);
@@ -216,7 +241,7 @@ void subsystems::localization::leftDistanceReset(lemlib::Chassis& chassis, Wall 
 
     static pros::Distance leftDistanceSensor = distanceSensors[0];
     static double xOffset = 5;
-    static double yOffset = 1;
+    static double yOffset = 4;
 
     double distance = leftDistanceSensor.get() / 25.4;
     if (distance == 9999) return;
@@ -236,7 +261,7 @@ void subsystems::localization::leftDistanceReset(lemlib::Chassis& chassis, Wall 
             chassis.setPose(72 - effectiveDistance, pose.y, pose.theta);
             break;
         case Wall::TOP_Y:
-            effectiveDistance = effectiveDistance * std::cos(heading - M_PI_2) + yOffset * std::sin(heading - M_PI_2);
+            effectiveDistance = effectiveDistance * std::cos(heading - 3*M_PI_2) + yOffset * std::sin(heading - 3*M_PI_2);
             chassis.setPose(pose.x, 72 - effectiveDistance, pose.theta);
             break;
         case Wall::BOTTOM_Y:

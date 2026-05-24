@@ -1,6 +1,10 @@
 #pragma once
 #include "main.h"
 
+void right_12();
+void right_43_w_wing();
+void wing_balls_macro();
+void seven_counter();
 void thirteen_awp();
 void fourteen_awp();
 

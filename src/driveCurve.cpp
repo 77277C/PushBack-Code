@@ -22,8 +22,8 @@ std::pair<int32_t, int32_t> driveCurveTony(const std::pair<int32_t, int32_t>& in
     return {first, second};
 }
 
-constexpr int32_t T = 2.5;
-constexpr float DRIVE_CURVE_SCALE = 1;
+constexpr int32_t T = 1;
+constexpr float DRIVE_CURVE_SCALE = 0.85;
 
 std::pair<int32_t, int32_t> driveCurveGeorge(const std::pair<int32_t, int32_t>& input) {
     int32_t first = input.first;

@@ -7,7 +7,7 @@ pros::MotorGroup rightMotors({8, 9, 10}, pros::MotorCartridge::blue);
 lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 12.5,
     lemlib::Omniwheel::NEW_325, 450, 8);
 
-pros::Imu imu(12);
+pros::Imu imu(15);
 
 pros::Rotation horizontalTrackingWheelRotation(-17);
 lemlib::TrackingWheel verticalTrackingWheel(&horizontalTrackingWheelRotation, 2.0, 0);
@@ -30,7 +30,7 @@ lemlib::ControllerSettings linearSettings(6, // proportional gain (kP)
                                               100, // small error range timeout, in milliseconds
                                               3, // large error range, in inches
                                               500, // large error range timeout, in milliseconds
-                                              20 // maximum acceleration (slew)
+                                              10 // maximum acceleration (slew)
 );
 
 // angular PID controller
@@ -57,16 +57,19 @@ localization::UpgradedChassis<PARTICLES> chassis(drivetrain, linearSettings, ang
 
 
 rd::Selector selector({
+    {"12 AWP", right_12},
     {"13 AWP", thirteen_awp},
     {"14 AWP", fourteen_awp},
     {"Right 9 w/ wing", right_9_w_wing},
     {"Right 9 w/o wing", right_9_no_wing},
     {"Left 4+3 w/ wing", left_43_w_wing},
     {"Left 4+3 w/o wing", left_43_no_wing},
+    {"Right 4+3 wing", right_43_w_wing},
     {"Left 7", seven_ball_left},
     {"Right 7", seven_ball_right},
     {"Left ML Rush (awp align)", left_ml_rush},
     {"Right ML Rush (awp align)", right_ml_rush},
+    {"7 Ball Counter", seven_counter},
 
     //{"RightElim", rightElim},
     //{"Tune", tunePid},
@@ -154,12 +157,19 @@ void opcontrol() {
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
             goal = subsystems::intake::GoalType::HOLD_BALLS;
         }
-        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
-            goal = subsystems::intake::GoalType::LOW_GOAL;
-        }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
             goal = subsystems::intake::GoalType::LOW_GOAL_DOWN;
         }
+        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
+            goal = subsystems::intake::GoalType::LOW_GOAL;
+        }
+        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+            goal = subsystems::intake::GoalType::LOW_GOAL_SKILLS;
+        }
+        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+            goal = subsystems::intake::GoalType::MEDIUM_GOAL_QUEUE;
+        }
+
         subsystems::intake::iterate(goal);
 
         // intake colorsort
@@ -192,6 +202,11 @@ void opcontrol() {
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
             autonomous();
+            //seven_ball_right();
+            //right_12();
+            //seven_ball_left();
+            //right_43_w_wing();
+            //seven_counter();
             //right_9_first_part();
             //right_9_w_wing();
             //left_43_w_wing();
@@ -208,7 +223,8 @@ void opcontrol() {
             //skillsTwo();
             //skillsFour();
             //skillsFive();
-            // fourteen_awp();
+            //fourteen_awp();
+            //wing_balls();
             subsystems::intake::stop();
             chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
         }

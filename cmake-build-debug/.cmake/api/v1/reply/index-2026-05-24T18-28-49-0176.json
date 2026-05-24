@@ -11,31 +11,31 @@
 			"cmake" : "C:/Users/chawk/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe",
 			"cpack" : "C:/Users/chawk/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cpack.exe",
 			"ctest" : "C:/Users/chawk/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/ctest.exe",
-			"root" : "C:/Users/chawk/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30"
+			"root" : "C:/Users/chawk/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-4.2"
 		},
 		"version" : 
 		{
 			"isDirty" : false,
-			"major" : 3,
-			"minor" : 30,
-			"patch" : 5,
-			"string" : "3.30.5",
+			"major" : 4,
+			"minor" : 2,
+			"patch" : 2,
+			"string" : "4.2.2",
 			"suffix" : ""
 		}
 	},
 	"objects" : 
 	[
 		{
-			"jsonFile" : "codemodel-v2-b1f5845dda0a0f5caebf.json",
+			"jsonFile" : "codemodel-v2-9224a544345e85a3359e.json",
 			"kind" : "codemodel",
 			"version" : 
 			{
 				"major" : 2,
-				"minor" : 7
+				"minor" : 9
 			}
 		},
 		{
-			"jsonFile" : "cache-v2-079bf86e21e1cfb31ca5.json",
+			"jsonFile" : "cache-v2-2ce3675d8339da659ee4.json",
 			"kind" : "cache",
 			"version" : 
 			{
@@ -44,7 +44,7 @@
 			}
 		},
 		{
-			"jsonFile" : "cmakeFiles-v1-5385400cfde169f6a740.json",
+			"jsonFile" : "cmakeFiles-v1-1560d0ff8254c1c5c3f8.json",
 			"kind" : "cmakeFiles",
 			"version" : 
 			{
@@ -66,7 +66,7 @@
 	{
 		"cache-v2" : 
 		{
-			"jsonFile" : "cache-v2-079bf86e21e1cfb31ca5.json",
+			"jsonFile" : "cache-v2-2ce3675d8339da659ee4.json",
 			"kind" : "cache",
 			"version" : 
 			{
@@ -76,7 +76,7 @@
 		},
 		"cmakeFiles-v1" : 
 		{
-			"jsonFile" : "cmakeFiles-v1-5385400cfde169f6a740.json",
+			"jsonFile" : "cmakeFiles-v1-1560d0ff8254c1c5c3f8.json",
 			"kind" : "cmakeFiles",
 			"version" : 
 			{
@@ -86,12 +86,12 @@
 		},
 		"codemodel-v2" : 
 		{
-			"jsonFile" : "codemodel-v2-b1f5845dda0a0f5caebf.json",
+			"jsonFile" : "codemodel-v2-9224a544345e85a3359e.json",
 			"kind" : "codemodel",
 			"version" : 
 			{
 				"major" : 2,
-				"minor" : 7
+				"minor" : 9
 			}
 		},
 		"toolchains-v1" : 
