@@ -37,3 +37,5 @@ void itCouldWork();
 void right_9_first_part();
 void right_9_w_wing();
 void driveForward();
+
+void skills_119();
